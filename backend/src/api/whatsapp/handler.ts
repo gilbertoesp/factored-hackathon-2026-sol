@@ -1,6 +1,17 @@
 import { Hono } from "hono";
+import { defaultWebhookDeps } from "./deps";
+import type { WebhookDeps } from "./webhook";
 
-export const handlerRouter = new Hono();
+export function createHandlerRouter(deps?: Partial<WebhookDeps>): Hono {
+	const router = new Hono();
+	const resolved = { ...defaultWebhookDeps(), ...deps };
 
-// WhatsApp Cloud API dispatch + escalation actions: planned
-handlerRouter.post("/handler", (c) => c.json({ status: "accepted" }, 200));
+	// Delegation token verification and Cloud API dispatch: added slice by slice.
+	void resolved;
+
+	router.post("/handler", (c) => c.json({ status: "accepted" }, 200));
+
+	return router;
+}
+
+export const handlerRouter = createHandlerRouter();

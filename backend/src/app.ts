@@ -1,11 +1,16 @@
 import { Hono } from "hono";
-import { handlerRouter } from "./api/whatsapp/handler";
-import { webhookRouter } from "./api/whatsapp/webhook";
+import { createHandlerRouter } from "./api/whatsapp/handler";
+import { createWebhookRouter, type WebhookDeps } from "./api/whatsapp/webhook";
 
-export function createApp(): Hono {
+/**
+ * Builds the app with injected seams. Tests pass fresh deps per case so no
+ * mutable state (dedup set, rate-limit bucket, grant store) is shared between
+ * them. Production callers pass nothing and get module-default deps.
+ */
+export function createApp(overrides?: Partial<WebhookDeps>): Hono {
 	const app = new Hono();
-	app.route("/api/whatsapp", handlerRouter);
-	app.route("/api/whatsapp", webhookRouter);
+	app.route("/api/whatsapp", createHandlerRouter(overrides));
+	app.route("/api/whatsapp", createWebhookRouter(overrides));
 	return app;
 }
 
