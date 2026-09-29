@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import type { JWK } from "jose";
 import { defaultWebhookDeps } from "./deps";
 import {
 	notificationIds,
@@ -27,8 +28,9 @@ export interface WebhookDeps {
 	dispatch: DispatchPort;
 }
 
+/** The Exit Seam's view of the delegation signing keys. */
 export interface KeyRing {
-	ready(): Promise<{ publicJwk: unknown }>;
+	ready(): Promise<{ publicJwk: JWK }>;
 }
 
 export interface MessageIdSet {
@@ -59,9 +61,22 @@ export interface GrantStore {
 	consume(id: string, now: number): GrantRecord | null;
 }
 
-export interface SpanAttributes {
-	[key: string]: string | number | boolean;
-}
+export type SpanAttributes = Record<string, string | number | boolean>;
+
+/**
+ * The only attribute names that may reach a trace. Webhook bodies carry phone
+ * numbers and message text, so the allowlist is closed: an attribute outside
+ * this set is a leak, not a missing feature.
+ */
+export const SPAN_ATTRIBUTE_ALLOWLIST: ReadonlySet<string> = new Set([
+	"whatsapp.entry_id",
+	"whatsapp.field",
+	"whatsapp.outcome",
+	"whatsapp.signature_valid",
+	"whatsapp.rate_limited",
+	"whatsapp.duplicate",
+	"whatsapp.delegation.scope",
+]);
 
 export interface TelemetryPort {
 	startSpan(name: string, attributes?: SpanAttributes): SpanHandle;
@@ -98,53 +113,90 @@ function firstSubject(notification: WhatsAppNotification): string | undefined {
 	return undefined;
 }
 
+/** The payload field of the first change, for the trace. */
+function firstField(notification: WhatsAppNotification): string | undefined {
+	return notification.entry[0]?.changes[0]?.field;
+}
+
 export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 	const router = new Hono();
 	const deps: WebhookDeps = { ...defaultWebhookDeps(), ...overrides };
 
 	router.get("/webhook", (c) => {
+		const span = deps.telemetry.startSpan("whatsapp.webhook.verify", {
+			"whatsapp.signature_valid": false,
+		});
 		const mode = c.req.query("hub.mode");
 		const challenge = c.req.query("hub.challenge");
 		const token = c.req.query("hub.verify_token");
 
 		if (mode === undefined || challenge === undefined || token === undefined) {
+			span.setAttributes({ "whatsapp.outcome": "forbidden" });
+			span.end();
 			return c.text("forbidden", 403);
 		}
 		if (mode !== "subscribe") {
+			span.setAttributes({ "whatsapp.outcome": "unsupported_mode" });
+			span.end();
 			return c.text("unsupported hub.mode", 400);
 		}
 		if (!verifySecret(token, deps.secrets.verifyToken)) {
+			span.setAttributes({ "whatsapp.outcome": "forbidden" });
+			span.end();
 			return c.text("forbidden", 403);
 		}
+		span.setAttributes({
+			"whatsapp.signature_valid": true,
+			"whatsapp.outcome": "ok",
+		});
+		span.end();
 		return c.text(challenge, 200, { "content-type": "text/plain" });
 	});
 
 	router.post("/webhook", async (c) => {
+		const span = deps.telemetry.startSpan("whatsapp.webhook.post", {
+			"whatsapp.signature_valid": false,
+		});
+
 		// Read the raw body exactly once: the signature covers these bytes, so
-		// parsing first would make verification meaningless.
+		// parsing first would make verification meaningless. The body itself is
+		// never recorded on the span.
 		const rawBody = await c.req.text();
 		const signature = c.req.header(SIGNATURE_HEADER);
 
 		if (!verifySignature(rawBody, signature, deps.secrets.appSecret)) {
+			span.setAttributes({ "whatsapp.outcome": "unauthorized" });
+			span.end();
 			return c.json({ status: "unauthorized" }, 401);
 		}
+		span.setAttributes({ "whatsapp.signature_valid": true });
 
 		// Verification first, then parsing: a valid signature authenticates the
 		// sender but does not make the body trustworthy.
 		const parsed = parseNotification(rawBody);
 		if (!parsed.ok) {
+			span.setAttributes({ "whatsapp.outcome": "invalid_payload" });
+			span.end();
 			return c.json({ status: "invalid_payload", issues: parsed.issues }, 400);
 		}
 
 		const now = deps.clock();
+		const entryId = parsed.value.entry[0]?.id ?? "unknown";
+		span.setAttributes({
+			"whatsapp.entry_id": entryId,
+			"whatsapp.field": firstField(parsed.value) ?? "unknown",
+		});
 
 		// Counted only after the request is known to be genuine and well-formed,
 		// so a forged or malformed flood cannot burn a tenant's budget.
-		const entryId = parsed.value.entry[0]?.id ?? "unknown";
 		if (!deps.rateLimit.take(entryId, now)) {
-			const retryAfter = Math.ceil(RETRY_AFTER_SECONDS);
+			span.setAttributes({
+				"whatsapp.outcome": "rate_limited",
+				"whatsapp.rate_limited": true,
+			});
+			span.end();
 			return c.json({ status: "rate_limited" }, 429, {
-				"retry-after": String(retryAfter),
+				"retry-after": String(RETRY_AFTER_SECONDS),
 			});
 		}
 
@@ -154,6 +206,11 @@ export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 		// unacknowledged notifications for 36 hours, so a non-2xx would loop.
 		for (const id of ids) {
 			if (deps.seen.add(id, now)) {
+				span.setAttributes({
+					"whatsapp.outcome": "duplicate",
+					"whatsapp.duplicate": true,
+				});
+				span.end();
 				return c.json({ status: "duplicate" }, 200);
 			}
 		}
@@ -163,6 +220,8 @@ export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 			? await deps.grants.issue(subject, WRITE_SCOPE, now)
 			: undefined;
 
+		span.setAttributes({ "whatsapp.outcome": "ok" });
+		span.end();
 		return c.json({ status: "ok", grant_id: grantId }, 200);
 	});
 

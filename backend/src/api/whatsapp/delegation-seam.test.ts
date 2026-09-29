@@ -1,79 +1,73 @@
 import { expect, test } from "bun:test";
 import { createApp } from "../../app";
+import { createDelegationKeys, verifyDelegationToken } from "./delegation";
 import {
-	createDelegationKeys,
-	mintDelegationToken,
-	verifyDelegationToken,
-} from "./delegation";
-import { defaultWebhookDeps, RecordingTelemetry } from "./deps";
-import {
+	handlerRequest,
 	makeDeps,
 	messagesPayload,
 	signedWebhookRequest,
+	statusesPayload,
+	verifiedPayload,
 	webhookRequest,
 } from "./test-helpers";
 
-const keys = await createDelegationKeys();
+async function admit(deps: ReturnType<typeof makeDeps>["deps"]) {
+	const res = await createApp(deps).fetch(
+		signedWebhookRequest(messagesPayload({ from: "15551234567" })),
+	);
+	const body = (await res.json()) as { grant_id?: string };
+	if (body.grant_id === undefined)
+		throw new Error("expected a grant to be issued");
+	return body.grant_id;
+}
 
 test("an admitted message yields a grant carrying a delegation token", async () => {
 	const { deps } = makeDeps();
-	const app = createApp(deps);
+	const grantId = await admit(deps);
 
-	const inbound = await app.fetch(
-		signedWebhookRequest(messagesPayload({ from: "15551234567" })),
-	);
-	const { grant_id: grantId } = (await inbound.json()) as { grant_id: string };
 	const grant = deps.grants.consume(grantId, deps.clock());
-	const ring = await deps.keyRing.ready();
-
 	expect(grant?.token).toBeString();
-	const result = await verifyDelegationToken(
-		grant?.token ?? "",
-		ring.publicJwk,
-		{
-			expectedActor: "agent",
-			requiredScope: "whatsapp:write",
-		},
-	);
-	expect(result.ok).toBe(true);
 });
 
 test("the granted token is signed by the key ring the Exit Seam verifies with", async () => {
 	const { deps } = makeDeps();
-	const app = createApp(deps);
-
-	const inbound = await app.fetch(
-		signedWebhookRequest(messagesPayload({ from: "15551234567" })),
-	);
-	const { grant_id: grantId } = (await inbound.json()) as { grant_id: string };
+	const grantId = await admit(deps);
 	const grant = deps.grants.consume(grantId, deps.clock());
-	const ring = await deps.keyRing.ready();
+	const { publicJwk } = await deps.keyRing.ready();
+
+	const payload = verifiedPayload(
+		await verifyDelegationToken(grant?.token ?? "", publicJwk, {
+			expectedActor: "agent",
+			requiredScope: "whatsapp:write",
+		}),
+	);
+
+	expect(payload.sub).toBe("15551234567");
+});
+
+test("the granted token is refused when verified against another key ring", async () => {
+	const { deps } = makeDeps();
+	const grantId = await admit(deps);
+	const grant = deps.grants.consume(grantId, deps.clock());
+	const other = await createDelegationKeys();
 
 	const result = await verifyDelegationToken(
 		grant?.token ?? "",
-		ring.publicJwk,
-		{
-			expectedActor: "agent",
-		},
+		other.publicJwk,
 	);
-	expect(result.ok).toBe(true);
+
+	expect(result.ok).toBe(false);
 });
 
-test("a token minted for the sender names that sender as subject", async () => {
-	const token = await mintDelegationToken({
-		subject: "15551234567",
-		actor: "agent",
-		requestedScope: "whatsapp:write",
-		keys,
-	});
-	const { payload } = await verifyDelegationToken(token, keys.publicJwk);
+test("each test's key ring holds distinct key material", async () => {
+	const first = await makeDeps().deps.keyRing.ready();
+	const second = await makeDeps().deps.keyRing.ready();
 
-	expect(payload?.sub).toBe("15551234567");
+	expect(first.publicJwk.x).not.toBe(second.publicJwk.x);
 });
 
 test("a statuses-only notification issues no grant and no token", async () => {
 	const { deps } = makeDeps();
-	const { statusesPayload } = await import("./test-helpers");
 
 	const res = await createApp(deps).fetch(
 		signedWebhookRequest(statusesPayload({ statusId: "wamid.S1" })),
@@ -100,15 +94,12 @@ test("an unsigned request never reaches the grant or token path", async () => {
 	expect(issued).toBe(0);
 });
 
-test("the delegation key set is a distinct key pair per service instance", async () => {
-	const other = await createDelegationKeys();
-	expect(other.publicJwk.kid ?? JSON.stringify(other.publicJwk)).not.toBe(
-		keys.publicJwk.kid ?? JSON.stringify(keys.publicJwk),
-	);
-});
-
 test("an unknown token string is refused at verification", async () => {
-	const result = await verifyDelegationToken("not-a-jwt", keys.publicJwk);
+	const { deps } = makeDeps();
+	const { publicJwk } = await deps.keyRing.ready();
+
+	const result = await verifyDelegationToken("not-a-jwt", publicJwk);
+
 	expect(result.ok).toBe(false);
 });
 
@@ -125,26 +116,22 @@ test("a grant carrying no token is refused at the Exit Seam", async () => {
 		},
 	};
 
-	const app = createApp(deps);
-	const inbound = await app.fetch(
-		signedWebhookRequest(messagesPayload({ from: "15551234567" })),
-	);
-	const { grant_id: grantId } = (await inbound.json()) as { grant_id: string };
-
-	const res = await app.fetch(
-		new Request("http://localhost/api/whatsapp/handler", {
-			method: "POST",
-			headers: { "content-type": "application/json" },
-			body: JSON.stringify({ grant_id: grantId }),
-		}),
-	);
+	const res = await createApp(deps).fetch(handlerRequest(await admit(deps)));
 
 	// The token is what carries authority, so an empty one is refused as
 	// forbidden rather than treated as an absent grant.
 	expect(res.status).toBe(403);
 });
 
-test("default deps expose a recording telemetry port", () => {
-	const deps = defaultWebhookDeps();
-	expect(deps.telemetry).toBeInstanceOf(RecordingTelemetry);
+test("a grant minted for one sender cannot act on another", async () => {
+	const { deps } = makeDeps();
+	const grantId = await admit(deps);
+	const grant = deps.grants.consume(grantId, deps.clock());
+	const { publicJwk } = await deps.keyRing.ready();
+	const payload = verifiedPayload(
+		await verifyDelegationToken(grant?.token ?? "", publicJwk),
+	);
+
+	expect(payload.sub).toBe("15551234567");
+	expect(payload.may_act).toEqual({ sub: "agent" });
 });

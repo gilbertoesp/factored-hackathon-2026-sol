@@ -99,8 +99,12 @@ test("the grant store is bounded and drops the oldest entries", async () => {
 		),
 	);
 
-	expect(store.consume(ids[0], now)).toBeNull();
-	expect(store.consume(ids[4], now)).not.toBeNull();
+	const [oldest] = ids;
+	const newest = ids.at(-1);
+
+	expect(oldest).toBeString();
+	expect(store.consume(oldest as string, now)).toBeNull();
+	expect(store.consume(newest as string, now)).not.toBeNull();
 });
 
 test("a caller-supplied subject in the body is rejected as an unknown field", async () => {

@@ -10,6 +10,7 @@ import {
 	mintDelegationToken,
 	verifyDelegationToken,
 } from "./delegation";
+import { verifiedPayload } from "./test-helpers";
 
 const keys = await createDelegationKeys();
 
@@ -64,10 +65,12 @@ test("the token carries the sender as subject and the agent as actor", async () 
 		keys,
 	});
 
-	const { payload } = await verifyDelegationToken(token, keys.publicJwk);
+	const payload = verifiedPayload(
+		await verifyDelegationToken(token, keys.publicJwk),
+	);
 
-	expect(payload?.sub).toBe("15551234567");
-	expect(payload?.act).toEqual({ sub: "agent" });
+	expect(payload.sub).toBe("15551234567");
+	expect(payload.act).toEqual({ sub: "agent" });
 });
 
 test("may_act names who is permitted to act on the subject", async () => {
@@ -78,9 +81,11 @@ test("may_act names who is permitted to act on the subject", async () => {
 		keys,
 	});
 
-	const { payload } = await verifyDelegationToken(token, keys.publicJwk);
+	const payload = verifiedPayload(
+		await verifyDelegationToken(token, keys.publicJwk),
+	);
 
-	expect(payload?.may_act).toEqual({ sub: "agent" });
+	expect(payload.may_act).toEqual({ sub: "agent" });
 });
 
 test("issuer and audience are pinned to the delegation service", async () => {
@@ -91,10 +96,12 @@ test("issuer and audience are pinned to the delegation service", async () => {
 		keys,
 	});
 
-	const { payload } = await verifyDelegationToken(token, keys.publicJwk);
+	const payload = verifiedPayload(
+		await verifyDelegationToken(token, keys.publicJwk),
+	);
 
-	expect(payload?.iss).toBe(DELEGATION_ISSUER);
-	expect(payload?.aud).toBe(DELEGATION_AUDIENCE);
+	expect(payload.iss).toBe(DELEGATION_ISSUER);
+	expect(payload.aud).toBe(DELEGATION_AUDIENCE);
 });
 
 test("the token expires within a minute of issue", async () => {
@@ -107,11 +114,13 @@ test("the token expires within a minute of issue", async () => {
 		now: () => issuedAt,
 	});
 
-	const { payload } = await verifyDelegationToken(token, keys.publicJwk, {
-		now: () => issuedAt * 1000,
-	});
+	const payload = verifiedPayload(
+		await verifyDelegationToken(token, keys.publicJwk, {
+			now: () => issuedAt * 1000,
+		}),
+	);
 
-	expect(payload?.exp).toBe((payload?.iat ?? 0) + 60);
+	expect(payload.exp).toBe((payload.iat as number) + 60);
 });
 
 test("a token with a unique jti is issued per call", async () => {
@@ -128,10 +137,12 @@ test("a token with a unique jti is issued per call", async () => {
 		keys,
 	});
 
-	const a = await verifyDelegationToken(first, keys.publicJwk);
-	const b = await verifyDelegationToken(second, keys.publicJwk);
+	const a = verifiedPayload(await verifyDelegationToken(first, keys.publicJwk));
+	const b = verifiedPayload(
+		await verifyDelegationToken(second, keys.publicJwk),
+	);
 
-	expect(a.payload?.jti).not.toBe(b.payload?.jti);
+	expect(a.jti).not.toBe(b.jti);
 });
 
 test("an expired token is rejected", async () => {
@@ -254,9 +265,11 @@ test("minting drops a requested scope outside the allowlist", async () => {
 		keys,
 	});
 
-	const { payload } = await verifyDelegationToken(token, keys.publicJwk);
+	const payload = verifiedPayload(
+		await verifyDelegationToken(token, keys.publicJwk),
+	);
 
-	expect(payload?.scope).toBe("whatsapp:write");
+	expect(payload.scope).toBe("whatsapp:write");
 });
 
 test("a token with no scope claim is rejected as unusable for writes", async () => {

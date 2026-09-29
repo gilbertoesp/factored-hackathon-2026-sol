@@ -1,14 +1,6 @@
 import { expect, test } from "bun:test";
 import { createApp } from "../../app";
-import { makeDeps, VERIFY_TOKEN } from "./test-helpers";
-
-function verifyRequest(params: Record<string, string>): Request {
-	const url = new URL("http://localhost/api/whatsapp/webhook");
-	for (const [key, value] of Object.entries(params)) {
-		url.searchParams.set(key, value);
-	}
-	return new Request(url, { method: "GET" });
-}
+import { makeDeps, VERIFY_TOKEN, verifyRequest } from "./test-helpers";
 
 test("echoes the challenge when mode and verify token match", async () => {
 	const { deps } = makeDeps();

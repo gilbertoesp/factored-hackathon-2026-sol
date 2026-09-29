@@ -1,4 +1,6 @@
+import { expect } from "bun:test";
 import { createHmac } from "node:crypto";
+import type { VerifyResult } from "./delegation";
 import {
 	DelegationKeyRing,
 	InMemoryGrantStore,
@@ -10,6 +12,17 @@ import type { WebhookDeps } from "./webhook";
 
 export const APP_SECRET = "test-app-secret";
 export const VERIFY_TOKEN = "test-verify-token";
+
+/**
+ * Narrows a verification result to its payload, failing the test with the
+ * rejection reason when the token did not verify.
+ */
+export function verifiedPayload(result: VerifyResult): Record<string, unknown> {
+	if (!result.ok)
+		throw new Error(`expected a verified token, got: ${result.reason}`);
+	expect(result.ok).toBe(true);
+	return result.payload;
+}
 
 /**
  * Builds a fresh, fully-isolated dep set per test case. Nothing is module-level,
@@ -46,6 +59,24 @@ export function makeDeps(overrides: Partial<WebhookDeps> = {}): {
 
 export function signBody(body: string, secret = APP_SECRET): string {
 	return `sha256=${createHmac("sha256", secret).update(body).digest("hex")}`;
+}
+
+/** Builds the GET Meta sends for the webhook subscription handshake. */
+export function verifyRequest(params: Record<string, string>): Request {
+	const url = new URL("http://localhost/api/whatsapp/webhook");
+	for (const [key, value] of Object.entries(params)) {
+		url.searchParams.set(key, value);
+	}
+	return new Request(url.toString(), { method: "GET" });
+}
+
+/** Builds the POST the Exit Seam accepts. */
+export function handlerRequest(grantId: string): Request {
+	return new Request("http://localhost/api/whatsapp/handler", {
+		method: "POST",
+		headers: { "content-type": "application/json" },
+		body: JSON.stringify({ grant_id: grantId }),
+	});
 }
 
 /** A minimal valid `messages` notification envelope. */
