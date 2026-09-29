@@ -14,9 +14,10 @@ export const VERIFY_TOKEN = "test-verify-token";
  * Builds a fresh, fully-isolated dep set per test case. Nothing is module-level,
  * so dedup / rate-limit / grant state never leaks between cases.
  */
-export function makeDeps(
-	overrides: Partial<WebhookDeps> = {},
-): { deps: WebhookDeps; advance: (ms: number) => void } {
+export function makeDeps(overrides: Partial<WebhookDeps> = {}): {
+	deps: WebhookDeps;
+	advance: (ms: number) => void;
+} {
 	let now = 1_700_000_000_000;
 	const deps: WebhookDeps = {
 		clock: () => now,
@@ -28,7 +29,12 @@ export function makeDeps(
 		dispatch: () => {},
 		...overrides,
 	};
-	return { deps, advance: (ms: number) => void (now += ms) };
+	return {
+		deps,
+		advance(ms: number) {
+			now += ms;
+		},
+	};
 }
 
 export function signBody(body: string, secret = APP_SECRET): string {
@@ -36,12 +42,14 @@ export function signBody(body: string, secret = APP_SECRET): string {
 }
 
 /** A minimal valid `messages` notification envelope. */
-export function messagesPayload(options: {
-	wamid?: string;
-	entryId?: string;
-	from?: string;
-	body?: string;
-} = {}): string {
+export function messagesPayload(
+	options: {
+		wamid?: string;
+		entryId?: string;
+		from?: string;
+		body?: string;
+	} = {},
+): string {
 	return JSON.stringify({
 		object: "whatsapp_business_account",
 		entry: [
@@ -74,11 +82,9 @@ export function messagesPayload(options: {
 }
 
 /** A minimal valid `statuses` notification envelope. */
-export function statusesPayload(options: {
-	statusId?: string;
-	entryId?: string;
-	status?: string;
-} = {}): string {
+export function statusesPayload(
+	options: { statusId?: string; entryId?: string; status?: string } = {},
+): string {
 	return JSON.stringify({
 		object: "whatsapp_business_account",
 		entry: [

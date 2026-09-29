@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { defaultWebhookDeps } from "./deps";
+import { SIGNATURE_HEADER, verifySignature } from "./signature";
 
 /**
  * Every source of mutable state the Entry Seam touches. Injected so each test
@@ -63,17 +64,24 @@ export interface DispatchInput {
 	clock: () => number;
 }
 
-export interface DispatchPort {
-	(input: DispatchInput): void;
-}
+export type DispatchPort = (input: DispatchInput) => void;
 
-export function createWebhookRouter(deps: WebhookDeps): Hono {
+export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 	const router = new Hono();
+	const deps: WebhookDeps = { ...defaultWebhookDeps(), ...overrides };
 
-	// Signature verification, dedup, rate limiting, and dispatch: added slice by slice.
-	void deps;
+	router.post("/webhook", async (c) => {
+		// Read the raw body exactly once: the signature covers these bytes, so
+		// parsing first would make verification meaningless.
+		const rawBody = await c.req.text();
+		const signature = c.req.header(SIGNATURE_HEADER);
 
-	router.post("/webhook", (c) => c.json({ status: "ok" }, 200));
+		if (!verifySignature(rawBody, signature, deps.secrets.appSecret)) {
+			return c.json({ status: "unauthorized" }, 401);
+		}
+
+		return c.json({ status: "ok" }, 200);
+	});
 
 	return router;
 }
