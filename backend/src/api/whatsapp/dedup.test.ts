@@ -14,11 +14,18 @@ async function post(
 	return createApp(deps).fetch(signedWebhookRequest(body));
 }
 
+async function expectAdmitted(res: Response): Promise<void> {
+	expect(res.status).toBe(200);
+	expect((await res.json()) as { status: string }).toMatchObject({
+		status: "ok",
+	});
+}
+
 test("first delivery of a message is accepted", async () => {
 	const { deps } = makeDeps();
-	const res = await post(deps, messagesPayload({ wamid: "wamid.ONE" }));
-	expect(res.status).toBe(200);
-	expect(await res.json()).toEqual({ status: "ok" });
+	await expectAdmitted(
+		await post(deps, messagesPayload({ wamid: "wamid.ONE" })),
+	);
 });
 
 test("a replayed message is acknowledged without reprocessing", async () => {
@@ -39,11 +46,11 @@ test("a distinct message id is not treated as a replay", async () => {
 	await app.fetch(
 		signedWebhookRequest(messagesPayload({ wamid: "wamid.ONE" })),
 	);
-	const res = await app.fetch(
-		signedWebhookRequest(messagesPayload({ wamid: "wamid.TWO" })),
+	await expectAdmitted(
+		await app.fetch(
+			signedWebhookRequest(messagesPayload({ wamid: "wamid.TWO" })),
+		),
 	);
-
-	expect(await res.json()).toEqual({ status: "ok" });
 });
 
 test("the same message id under a different WABA is a distinct delivery", async () => {
@@ -55,13 +62,13 @@ test("the same message id under a different WABA is a distinct delivery", async 
 			messagesPayload({ wamid: "wamid.SAME", entryId: "WABA_1" }),
 		),
 	);
-	const res = await app.fetch(
-		signedWebhookRequest(
-			messagesPayload({ wamid: "wamid.SAME", entryId: "WABA_2" }),
+	await expectAdmitted(
+		await app.fetch(
+			signedWebhookRequest(
+				messagesPayload({ wamid: "wamid.SAME", entryId: "WABA_2" }),
+			),
 		),
 	);
-
-	expect(await res.json()).toEqual({ status: "ok" });
 });
 
 test("replayed status updates are deduplicated by their status id", async () => {
@@ -82,11 +89,11 @@ test("a message id and a status id do not collide", async () => {
 	await app.fetch(
 		signedWebhookRequest(messagesPayload({ wamid: "wamid.COLLIDE" })),
 	);
-	const res = await app.fetch(
-		signedWebhookRequest(statusesPayload({ statusId: "wamid.COLLIDE" })),
+	await expectAdmitted(
+		await app.fetch(
+			signedWebhookRequest(statusesPayload({ statusId: "wamid.COLLIDE" })),
+		),
 	);
-
-	expect(await res.json()).toEqual({ status: "ok" });
 });
 
 test("a message is re-admitted once its entry has aged out of the dedup window", async () => {
@@ -96,9 +103,7 @@ test("a message is re-admitted once its entry has aged out of the dedup window",
 
 	await app.fetch(signedWebhookRequest(body));
 	advance(25 * 60 * 60 * 1000);
-	const res = await app.fetch(signedWebhookRequest(body));
-
-	expect(await res.json()).toEqual({ status: "ok" });
+	await expectAdmitted(await app.fetch(signedWebhookRequest(body)));
 });
 
 test("a replay within the window is still refused after the window was checked", async () => {
@@ -121,7 +126,7 @@ test("dedup state does not leak between two apps built from separate deps", asyn
 	const body = messagesPayload({ wamid: "wamid.ISOLATED" });
 
 	await createApp(first.deps).fetch(signedWebhookRequest(body));
-	const res = await createApp(second.deps).fetch(signedWebhookRequest(body));
-
-	expect(await res.json()).toEqual({ status: "ok" });
+	await expectAdmitted(
+		await createApp(second.deps).fetch(signedWebhookRequest(body)),
+	);
 });

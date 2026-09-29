@@ -9,7 +9,7 @@ import {
 
 const url = "http://localhost";
 
-// A correctly signed body still returns 200 with the documented body.
+// A correctly signed body is admitted, and hands back a grant for the Exit Seam.
 test("Entry Seam: POST /api/whatsapp/webhook returns 200", async () => {
 	const { deps } = makeDeps();
 	const app = createApp(deps);
@@ -17,7 +17,9 @@ test("Entry Seam: POST /api/whatsapp/webhook returns 200", async () => {
 	const res = await app.fetch(signedWebhookRequest(messagesPayload()));
 
 	expect(res.status).toBe(200);
-	expect(await res.json()).toEqual({ status: "ok" });
+	const body = (await res.json()) as { status: string; grant_id?: string };
+	expect(body.status).toBe("ok");
+	expect(body.grant_id).toBeString();
 });
 
 // An unsigned body is now rejected at the Entry Seam rather than accepted.

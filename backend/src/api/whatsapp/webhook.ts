@@ -1,6 +1,10 @@
 import { Hono } from "hono";
 import { defaultWebhookDeps } from "./deps";
-import { notificationIds, parseNotification } from "./schema";
+import {
+	notificationIds,
+	parseNotification,
+	type WhatsAppNotification,
+} from "./schema";
 import { SIGNATURE_HEADER, verifySecret, verifySignature } from "./signature";
 
 /**
@@ -68,6 +72,19 @@ export interface DispatchInput {
 export type DispatchPort = (input: DispatchInput) => void;
 
 const RETRY_AFTER_SECONDS = 60;
+const WRITE_SCOPE = "whatsapp:write";
+
+/** The WhatsApp sender this notification is about, or undefined for a statuses-only payload. */
+function firstSubject(notification: WhatsAppNotification): string | undefined {
+	for (const entry of notification.entry) {
+		for (const change of entry.changes) {
+			if (change.field === "messages" && change.value.messages[0]) {
+				return change.value.messages[0].from;
+			}
+		}
+	}
+	return undefined;
+}
 
 export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 	const router = new Hono();
@@ -129,7 +146,12 @@ export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 			}
 		}
 
-		return c.json({ status: "ok" }, 200);
+		const subject = firstSubject(parsed.value);
+		const grantId = subject
+			? deps.grants.issue(subject, WRITE_SCOPE, now)
+			: undefined;
+
+		return c.json({ status: "ok", grant_id: grantId }, 200);
 	});
 
 	return router;

@@ -74,7 +74,9 @@ test("accepts a correctly signed body with 200 ok", async () => {
 	const res = await app.fetch(signedWebhookRequest(messagesPayload()));
 
 	expect(res.status).toBe(200);
-	expect(await res.json()).toEqual({ status: "ok" });
+	expect((await res.json()) as { status: string }).toMatchObject({
+		status: "ok",
+	});
 });
 
 test("does not verify against the shared singleton app", async () => {
