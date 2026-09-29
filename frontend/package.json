@@ -1,0 +1,41 @@
+{
+  "name": "fullstack-ai-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Frontend App Router (Next.js 15, React 19, Vercel AI SDK UI, Supabase SSR Auth, OTel Tracing)",
+  "scripts": {
+    "dev": "next dev --turbo",
+    "build": "next build",
+    "start": "next start",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "ai": "^4.1.0",
+    "@ai-sdk/react": "^1.1.0",
+    "@supabase/supabase-js": "^2.48.1",
+    "@supabase/ssr": "^0.5.2",
+    "jose": "^5.9.6",
+    "zod": "^3.24.1",
+    "@vercel/otel": "^1.10.0",
+    "@opentelemetry/api": "^1.9.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "typescript": "^5.7.3",
+    "@types/node": "^22.10.7",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "bun-types": "^1.1.42"
+  },
+  "packageDetails": {
+    "stack": "Next.js 15 App Router, React 19, Vercel AI SDK (@ai-sdk/react), Supabase SSR, Jose JWT, Biome, Bun",
+    "purpose": "Renders UI components, streams AI chat completions via useChat, manages SSR cookie auth with Supabase, and exports OpenTelemetry spans to OpenObserve via OTel Collector."
+  }
+}

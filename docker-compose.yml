@@ -1,0 +1,121 @@
+# Full-Stack AI Application Orchestration
+# Infrastructure: Next.js 15 Frontend + Bun Agent Backend + OpenObserve + OTel Collector + Supabase Postgres
+
+version: '3.8'
+
+services:
+  # =========================================================================
+  # 1. Frontend Service (Next.js 15 App Router + React 19 + Vercel AI SDK)
+  # =========================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ai_app_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+      # OpenTelemetry Instrumentation Endpoint (pointing to local OTel Collector)
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+      - OTEL_SERVICE_NAME=frontend-nextjs
+      - BACKEND_API_URL=http://backend:4000
+    depends_on:
+      - otel-collector
+      - backend
+    networks:
+      - ai_app_network
+    restart: unless-stopped
+
+  # =========================================================================
+  # 2. Backend Service (Bun Agentic Workflow Runtime + MCP + Supabase RLS)
+  # =========================================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ai_app_backend
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      - SUPABASE_URL=http://db:5432
+      - SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+      # OTel Tracing & Log Export configuration
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+      - OTEL_SERVICE_NAME=backend-agent-service
+    depends_on:
+      - otel-collector
+      - db
+    networks:
+      - ai_app_network
+    restart: unless-stopped
+
+  # =========================================================================
+  # 3. OpenTelemetry Collector Contrib (Telemetry Router)
+  # =========================================================================
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: ai_app_otel_collector
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
+    ports:
+      - "4317:4317" # OTLP gRPC receiver
+      - "4318:4318" # OTLP HTTP receiver
+      - "8888:8888" # Collector internal metrics
+    environment:
+      # Base64 encoded credentials (email:password or ingestion token) for OpenObserve
+      - OPENOBSERVE_AUTH_HEADER=Basic cm9vdEBleGFtcGxlLmNvbTpDb21wbGV4UGFzdzByZDEyMyE=
+    depends_on:
+      - openobserve
+    networks:
+      - ai_app_network
+    restart: unless-stopped
+
+  # =========================================================================
+  # 4. OpenObserve (Unified Observability Storage: Logs, Metrics, Traces)
+  # =========================================================================
+  openobserve:
+    image: openobserve/openobserve:v0.14.3
+    container_name: ai_app_openobserve
+    ports:
+      - "5080:5080" # OpenObserve Web UI & API Port
+    environment:
+      - ZO_ROOT_USER_EMAIL=root@example.com
+      - ZO_ROOT_USER_PASSWORD=ComplexPasw0rd123!
+      - ZO_DATA_DIR=/data
+    volumes:
+      - openobserve_data:/data
+    networks:
+      - ai_app_network
+    restart: unless-stopped
+
+  # =========================================================================
+  # 5. Database Service (PostgreSQL 16 for Supabase Auth & RLS Policies)
+  # =========================================================================
+  db:
+    image: postgres:16-alpine
+    container_name: ai_app_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - ai_app_network
+    restart: unless-stopped
+
+networks:
+  ai_app_network:
+    driver: bridge
+
+volumes:
+  openobserve_data:
+  postgres_data:
