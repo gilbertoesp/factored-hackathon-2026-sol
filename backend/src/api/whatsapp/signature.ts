@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
 const SIGNATURE_HEADER = "x-hub-signature-256";
 const PREFIX = "sha256=";
@@ -32,6 +32,18 @@ export function verifySignature(
 	if (a.length !== b.length) return false;
 
 	return timingSafeEqual(a, b);
+}
+
+/**
+ * Constant-time comparison for shared secrets. Both sides are hashed first so
+ * the length check cannot leak the expected length via a short-circuit.
+ */
+export function verifySecret(provided: string, expected: string): boolean {
+	if (expected.length === 0) return false;
+	return timingSafeEqual(
+		createHash("sha256").update(provided, "utf8").digest(),
+		createHash("sha256").update(expected, "utf8").digest(),
+	);
 }
 
 export { SIGNATURE_HEADER };
