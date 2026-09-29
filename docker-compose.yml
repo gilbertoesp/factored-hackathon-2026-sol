@@ -6,28 +6,28 @@ version: '3.8'
 services:
   # =========================================================================
   # 1. Frontend Service (Next.js 15 App Router + React 19 + Vercel AI SDK)
+  #    planned: uncomment once frontend/Dockerfile exists
   # =========================================================================
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: ai_app_frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - NODE_ENV=development
-      - NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-      # OpenTelemetry Instrumentation Endpoint (pointing to local OTel Collector)
-      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-      - OTEL_SERVICE_NAME=frontend-nextjs
-      - BACKEND_API_URL=http://backend:4000
-    depends_on:
-      - otel-collector
-      - backend
-    networks:
-      - ai_app_network
-    restart: unless-stopped
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: ai_app_frontend
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=development
+  #     - NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
+  #     - NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+  #     - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+  #     - OTEL_SERVICE_NAME=frontend-nextjs
+  #     - BACKEND_API_URL=http://backend:4000
+  #   depends_on:
+  #     - otel-collector
+  #     - backend
+  #   networks:
+  #     - ai_app_network
+  #   restart: unless-stopped
 
   # =========================================================================
   # 2. Backend Service (Bun Agentic Workflow Runtime + MCP + Supabase RLS)
@@ -41,9 +41,10 @@ services:
       - "4000:4000"
     environment:
       - PORT=4000
-      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
-      - SUPABASE_URL=http://db:5432
-      - SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - WHATSAPP_PHONE_ID=${WHATSAPP_PHONE_ID}
+      - WHATSAPP_TOKEN=${WHATSAPP_TOKEN}
       # OTel Tracing & Log Export configuration
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
       - OTEL_SERVICE_NAME=backend-agent-service

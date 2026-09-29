@@ -1,0 +1,14 @@
+{
+	"name": "fullstack-ai-whatsapp",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"workspaces": ["backend", "frontend"],
+	"scripts": {
+		"dev": "bun run --cwd backend dev",
+		"start": "bun run --cwd backend start",
+		"test": "bun run --cwd backend test",
+		"check": "bun run --cwd backend check",
+		"check:fix": "bun run --cwd backend check:fix"
+	}
+}
