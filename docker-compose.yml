@@ -1,5 +1,18 @@
 # Full-Stack AI Application Orchestration
 # Infrastructure: Next.js 15 Frontend + Bun Agent Backend + OpenObserve + OTel Collector + Supabase Postgres
+#
+# Two rules hold across every service here:
+#
+#   1. Published ports bind to 127.0.0.1 only. Nothing in this stack needs to
+#      be reachable from the LAN, and every service below holds either data or
+#      credentials.
+#   2. No credential appears literally. Each is interpolated from the host
+#      environment with a :? guard, so compose refuses to start rather than
+#      falling back to a default someone published to a repository.
+#
+# `docker compose config --variables` lists every variable and whether it is
+# required. Copy .env.example to .env and fill it in; see that file for what
+# each one is for.
 
 services:
   # =========================================================================
@@ -12,17 +25,17 @@ services:
   #     dockerfile: Dockerfile
   #   container_name: ai_app_frontend
   #   ports:
-  #     - "3000:3000"
+  #     - "127.0.0.1:3000:3000"
   #   environment:
   #     - NODE_ENV=development
-  #     - NEXT_PUBLIC_SUPABASE_URL=http://localhost:54321
-  #     - NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
+  #     - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
+  #     - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:?set in .env}
   #     - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
   #     - OTEL_SERVICE_NAME=frontend-nextjs
   #     - BACKEND_API_URL=http://backend:4000
   #   depends_on:
-  #     - otel-collector
-  #     - backend
+  #     backend:
+  #       condition: service_healthy
   #   networks:
   #     - ai_app_network
   #   restart: unless-stopped
@@ -35,24 +48,46 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: ai_app_backend
+    # The webhook receiver. Meta reaches this through a tunnel or reverse proxy
+    # in any real deployment; compose publishes it locally for development.
     ports:
-      - "4000:4000"
+      - "127.0.0.1:4000:4000"
     environment:
       - PORT=4000
-      - SUPABASE_URL=${SUPABASE_URL}
-      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
-      # Required. The process refuses to start without them, rather than
-      # rejecting every webhook with a 401 that reads as a Meta outage.
-      - WHATSAPP_APP_SECRET=${WHATSAPP_APP_SECRET}
-      - WHATSAPP_VERIFY_TOKEN=${WHATSAPP_VERIFY_TOKEN}
-      - WHATSAPP_PHONE_ID=${WHATSAPP_PHONE_ID}
-      - WHATSAPP_TOKEN=${WHATSAPP_TOKEN}
+      # Not guarded: nothing on this branch reads them yet, and a required
+      # variable nothing consumes is a false blocker on local setup. Once the
+      # Supabase-backed code lands, promote these to :? guards.
+      - SUPABASE_URL=${SUPABASE_URL:-}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-}
+      # Required. config.ts refuses to boot without them, which is why the
+      # compose guards below are not redundant: a blank value here is a 401 on
+      # every webhook that reads as a Meta outage rather than a missing variable.
+      - WHATSAPP_APP_SECRET=${WHATSAPP_APP_SECRET:?set WHATSAPP_APP_SECRET in .env}
+      - WHATSAPP_VERIFY_TOKEN=${WHATSAPP_VERIFY_TOKEN:?set WHATSAPP_VERIFY_TOKEN in .env}
+      # Planned: consumed by the Cloud API dispatch that is not written yet.
+      - WHATSAPP_PHONE_ID=${WHATSAPP_PHONE_ID:-}
+      - WHATSAPP_TOKEN=${WHATSAPP_TOKEN:-}
       # OTel Tracing & Log Export configuration
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
       - OTEL_SERVICE_NAME=backend-agent-service
     depends_on:
-      - otel-collector
-      - db
+      db:
+        condition: service_healthy
+        restart: true
+      otel-collector:
+        condition: service_healthy
+        restart: true
+    # Bun needs no write access to the image. The tmpfs covers /tmp, which Bun
+    # touches while transpiling on first run.
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 512m
+    cpus: 1.0
     networks:
       - ai_app_network
     restart: unless-stopped
@@ -67,14 +102,53 @@ services:
     volumes:
       - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml:ro
     ports:
-      - "4317:4317" # OTLP gRPC receiver
-      - "4318:4318" # OTLP HTTP receiver
-      - "8888:8888" # Collector internal metrics
+      # OTLP receivers accept unauthenticated trace and metric pushes from
+      # anything on the network, so these are loopback only.
+      - "127.0.0.1:4317:4317" # OTLP gRPC receiver
+      - "127.0.0.1:4318:4318" # OTLP HTTP receiver
+      # 8888 is deliberately not published. otelcol-contrib has served no
+      # internal metrics on it by default since the telemetry defaults changed,
+      # and this config has no service.telemetry block, so the previous
+      # revision forwarded a port nothing listened on. Publishing it was pure
+      # surface with no diagnostic behind it. To bring it back, add
+      # service.telemetry.metrics to otel-collector-config.yaml first.
     environment:
-      # Base64 encoded credentials (email:password or ingestion token) for OpenObserve
-      - OPENOBSERVE_AUTH_HEADER=${OPENOBSERVE_AUTH_HEADER:-Basic cm9vdEBleGFtcGxlLmNvbTpDb21wbGV4UGFzdzByZDEyMyE=}
+      # Base64 encoded credentials (email:password or ingestion token) for
+      # OpenObserve. Required: the previous inline default was the same
+      # root@example.com pair the OpenObserve service ships with.
+      - OPENOBSERVE_AUTH_HEADER=${OPENOBSERVE_AUTH_HEADER:?set OPENOBSERVE_AUTH_HEADER in .env}
     depends_on:
-      - openobserve
+      # On the probe, not on openobserve. Same readiness signal, from a
+      # container that can actually run an HTTP client. The probe is one-shot:
+      # it retries until OpenObserve answers /healthz and then exits 0, so the
+      # condition is service_completed_successfully rather than service_healthy.
+      # A one-shot container never reaches "healthy", so asking for that would
+      # hang the wait forever.
+      openobserve-probe:
+        condition: service_completed_successfully
+        restart: true
+    # Both this image and the collector's are distroless: no shell, no curl, no
+    # wget. A CMD-SHELL probe would fail with "no such file or directory", which
+    # Docker reports as ExitCode -1 and marks the container unhealthy forever.
+    # Exec the binary directly instead, so no shell is needed.
+    healthcheck:
+      # `components` builds the configured pipeline and exits non-zero if it
+      # cannot. A real check: it fails when the exporter or processor config is
+      # invalid, which a port probe cannot see.
+      test: ["CMD", "/otelcol-contrib", "validate", "--config=/etc/otelcol-contrib/config.yaml"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 256m
+    cpus: 0.5
     networks:
       - ai_app_network
     restart: unless-stopped
@@ -86,31 +160,109 @@ services:
     image: openobserve/openobserve:v0.14.3
     container_name: ai_app_openobserve
     ports:
-      - "5080:5080" # OpenObserve Web UI & API Port
+      # The web UI and ingestion API both live here, guarded by root creds.
+      - "127.0.0.1:5080:5080" # OpenObserve Web UI & API Port
     environment:
-      - ZO_ROOT_USER_EMAIL=root@example.com
-      - ZO_ROOT_USER_PASSWORD=ComplexPasw0rd123!
+      - ZO_ROOT_USER_EMAIL=${ZO_ROOT_USER_EMAIL:?set ZO_ROOT_USER_EMAIL in .env}
+      - ZO_ROOT_USER_PASSWORD=${ZO_ROOT_USER_PASSWORD:?set ZO_ROOT_USER_PASSWORD in .env}
       - ZO_DATA_DIR=/data
     volumes:
       - openobserve_data:/data
+    # No healthcheck here. The image is distroless: /bin, /sbin and /usr/bin are
+    # empty directories and the only executable is /openobserve, which starts a
+    # second server rather than probing one. There is nothing to exec and
+    # nothing to install into.
+    #
+    # A probe that cannot run is worse than none: Docker records ExitCode -1 and
+    # marks the container unhealthy forever, blocking every dependent. The
+    # openobserve-probe service below runs the HTTP check in a container that
+    # has curl, and the collector waits on that instead.
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      # Verified against the real image: it starts and serves with no
+      # capabilities at all.
+      - ALL
+    # No read_only. ZO_DATA_DIR=/data is a volume, but the image also writes to
+    # /tmp and its own config directory during startup.
+    mem_limit: 1g
+    cpus: 1.0
     networks:
       - ai_app_network
     restart: unless-stopped
 
   # =========================================================================
-  # 5. Database Service (PostgreSQL 16 for Supabase Auth & RLS Policies)
+  # 5. OpenObserve Readiness Probe
+  #    A throwaway container, not a service anything depends on for traffic.
+  #    Exists only because the openobserve image is distroless.
+  # =========================================================================
+  openobserve-probe:
+    image: curlimages/curl:8.11.1
+    container_name: ai_app_openobserve_probe
+    # /healthz is the unauthenticated liveness path; /api requires credentials,
+    # so probing it would report 401 and read as unhealthy while it is fine.
+    command:
+      - -sSf
+      - --retry
+      - "60"
+      - --retry-all-errors
+      - --retry-delay
+      - "2"
+      - http://openobserve:5080/healthz
+    depends_on:
+      - openobserve
+    networks:
+      - ai_app_network
+    restart: "no"
+
+  # =========================================================================
+  # 6. Database Service (PostgreSQL 16 for Supabase Auth & RLS Policies)
   # =========================================================================
   db:
     image: postgres:16-alpine
     container_name: ai_app_postgres
     ports:
-      - "5432:5432"
+      # Trust auth is off and the password was "postgres" in the previous
+      # revision. Loopback binding is what keeps that from mattering locally.
+      - "127.0.0.1:5432:5432"
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${POSTGRES_DB:-postgres}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      # Scram, so the password is not stored in plaintext on disk.
+      - POSTGRES_HOST_AUTH_METHOD=${POSTGRES_HOST_AUTH_METHOD:-scram-sha-256}
+      # The initdb defaults trust every local connection for host auth, which
+      # would let anything in the container skip the password entirely.
+      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # -d/-U so the check passes before any client has connected, which
+      # pg_isready otherwise reports as "accepting connections" on a closed
+      # socket and then stays green through a real outage.
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    security_opt:
+      - no-new-privileges:true
+    # No read_only: PGDATA is a volume, but the entrypoint also writes to
+    # /var/run/postgresql and /tmp, and initdb needs both.
+    cap_drop:
+      - ALL
+    cap_add:
+      # The entrypoint starts as root to chown PGDATA, then drops to the
+      # postgres user. With nothing granted it dies on "operation not
+      # permitted" at chmod. This is the verified minimum: with only these five
+      # it reaches "ready to accept connections".
+      - CHOWN
+      - FOWNER
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    mem_limit: 512m
+    cpus: 1.0
     networks:
       - ai_app_network
     restart: unless-stopped
