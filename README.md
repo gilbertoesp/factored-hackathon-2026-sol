@@ -146,7 +146,7 @@ reaching the network with a published password.
 docker compose up --build
 ```
 
-Services: `backend` (`4000`), `otel-collector` (`4317`, `4318`, `8888`),
+Services: `backend` (`4000`), `otel-collector` (`4317`, `4318`),
 `openobserve` (`5080`), `db` (`5432`). The `frontend` service is commented out
 in `docker-compose.yml` until `frontend/Dockerfile` exists.
 
