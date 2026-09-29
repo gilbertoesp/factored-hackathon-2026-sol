@@ -8,14 +8,42 @@ receivers:
 
 processors:
   batch: {}
+  # Second, independent check on customer data. The backend already refuses to
+  # set a span attribute outside its allowlist; this catches anything a future
+  # instrumentation library adds on its own. Patterns match attribute names, so
+  # a dotted key needs a regex rather than a glob.
+  attributes/redact:
+    actions:
+      - pattern: "customer.*"
+        action: delete
+      - pattern: "user.*"
+        action: delete
+      - pattern: 'regex:.*\.(raw_body|payload|body)$'
+        action: delete
+      - pattern: 'regex:.*(phone|msisdn)$'
+        action: delete
+      - pattern: 'regex:.*(token|secret|password)$'
+        action: delete
 
 exporters:
   debug:
     verbosity: basic
+  otlp_http/openobserve:
+    # The collector appends /v1/traces to this base, so it must stop at /otlp.
+    # OpenObserve ingests OTLP at /api/<org>/otlp/v1/traces and stores under the
+    # org named in the path; a different org needs a matching Authorization
+    # header. Traces land in the `default` stream.
+    endpoint: "http://openobserve:5080/api/default/otlp"
+    headers:
+      Authorization: "${env:OPENOBSERVE_AUTH_HEADER}"
+    compression: gzip
+    sending_queue:
+      enabled: true
+      queue_size: 2048
 
 service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [batch]
-      exporters: [debug]
+      processors: [attributes/redact, batch]
+      exporters: [debug, otlp_http/openobserve]

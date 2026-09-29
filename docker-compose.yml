@@ -41,6 +41,10 @@ services:
       - PORT=4000
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      # Required. The process refuses to start without them, rather than
+      # rejecting every webhook with a 401 that reads as a Meta outage.
+      - WHATSAPP_APP_SECRET=${WHATSAPP_APP_SECRET}
+      - WHATSAPP_VERIFY_TOKEN=${WHATSAPP_VERIFY_TOKEN}
       - WHATSAPP_PHONE_ID=${WHATSAPP_PHONE_ID}
       - WHATSAPP_TOKEN=${WHATSAPP_TOKEN}
       # OTel Tracing & Log Export configuration
@@ -68,7 +72,7 @@ services:
       - "8888:8888" # Collector internal metrics
     environment:
       # Base64 encoded credentials (email:password or ingestion token) for OpenObserve
-      - OPENOBSERVE_AUTH_HEADER=Basic cm9vdEBleGFtcGxlLmNvbTpDb21wbGV4UGFzdzByZDEyMyE=
+      - OPENOBSERVE_AUTH_HEADER=${OPENOBSERVE_AUTH_HEADER:-Basic cm9vdEBleGFtcGxlLmNvbTpDb21wbGV4UGFzdzByZDEyMyE=}
     depends_on:
       - openobserve
     networks:
