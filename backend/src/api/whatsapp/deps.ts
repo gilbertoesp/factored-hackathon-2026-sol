@@ -58,7 +58,11 @@ export class SeenMessageIds implements MessageIdSet {
 export class WabaTokenBucket implements TokenBucket {
 	readonly capacity: number;
 	readonly windowMs: number;
-	private readonly buckets = new Map<string, number>();
+	/** Usage is tracked per window, so a key stores { windowStart, used }. */
+	private readonly buckets = new Map<
+		string,
+		{ windowStart: number; used: number }
+	>();
 
 	constructor(options: { capacity?: number; windowMs?: number } = {}) {
 		this.capacity = options.capacity ?? 25;
@@ -66,27 +70,23 @@ export class WabaTokenBucket implements TokenBucket {
 	}
 
 	take(key: string, now: number): boolean {
-		this.evictExpired(now);
+		this.evictIdle(now);
 
-		const used = this.buckets.get(key);
-		if (used === undefined) {
-			this.buckets.set(key, 1);
+		const bucket = this.buckets.get(key);
+		if (bucket === undefined || now - bucket.windowStart >= this.windowMs) {
+			this.buckets.set(key, { windowStart: now, used: 1 });
 			return true;
 		}
-		if (used >= this.capacity) return false;
-		this.buckets.set(key, used + 1);
+		if (bucket.used >= this.capacity) return false;
+		bucket.used += 1;
 		return true;
 	}
 
-	private evictExpired(now: number): void {
-		if (this.buckets.size === 0) return;
-		// A single map-wide window keeps the accounting honest: one timestamp per
-		// key is enough because every bucket shares this window length.
-		for (const key of this.buckets.keys()) {
-			if (this.buckets.size <= this.capacity) break;
-			this.buckets.delete(key);
+	private evictIdle(now: number): void {
+		for (const [key, bucket] of this.buckets) {
+			if (now - bucket.windowStart >= this.windowMs * 2)
+				this.buckets.delete(key);
 		}
-		void now;
 	}
 }
 

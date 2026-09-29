@@ -67,6 +67,8 @@ export interface DispatchInput {
 
 export type DispatchPort = (input: DispatchInput) => void;
 
+const RETRY_AFTER_SECONDS = 60;
+
 export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 	const router = new Hono();
 	const deps: WebhookDeps = { ...defaultWebhookDeps(), ...overrides };
@@ -106,6 +108,17 @@ export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 		}
 
 		const now = deps.clock();
+
+		// Counted only after the request is known to be genuine and well-formed,
+		// so a forged or malformed flood cannot burn a tenant's budget.
+		const entryId = parsed.value.entry[0]?.id ?? "unknown";
+		if (!deps.rateLimit.take(entryId, now)) {
+			const retryAfter = Math.ceil(RETRY_AFTER_SECONDS);
+			return c.json({ status: "rate_limited" }, 429, {
+				"retry-after": String(retryAfter),
+			});
+		}
+
 		const ids = notificationIds(parsed.value);
 
 		// A replay is acknowledged with 200 rather than an error: Meta retries
