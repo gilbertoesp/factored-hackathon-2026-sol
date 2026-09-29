@@ -14,13 +14,19 @@ WhatsApp inbound messages arrive at a public webhook, are authenticated with Sup
 │   │   │   ├── webhook.test.ts
 │   │   │   └── webhook.ts
 │   │   ├── app.ts
+│   │   ├── config.test.ts
+│   │   ├── config.ts
+│   │   ├── health.test.ts
 │   │   └── index.ts
 │   ├── Dockerfile
 │   ├── bun.lock
 │   └── package.json
+├── docs/
+│   └── merge-recipe.md
 ├── frontend/
 │   └── package.json
 ├── .env.example
+├── biome.json
 ├── docker-compose.yml
 ├── otel-collector-config.yaml
 ├── package.json
