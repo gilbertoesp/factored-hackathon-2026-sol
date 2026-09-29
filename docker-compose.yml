@@ -1,8 +1,6 @@
 # Full-Stack AI Application Orchestration
 # Infrastructure: Next.js 15 Frontend + Bun Agent Backend + OpenObserve + OTel Collector + Supabase Postgres
 
-version: '3.8'
-
 services:
   # =========================================================================
   # 1. Frontend Service (Next.js 15 App Router + React 19 + Vercel AI SDK)
