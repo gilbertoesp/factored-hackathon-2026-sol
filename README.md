@@ -154,8 +154,13 @@ in `docker-compose.yml` until `frontend/Dockerfile` exists.
 
 Every published port binds `127.0.0.1`. Nothing in this stack needs LAN
 reachability, and every service holds either data or credentials. Verified with
-`lsof`: all six listen on loopback, and a request to the host's LAN address is
+`lsof`: all five listen on loopback, and a request to the host's LAN address is
 refused.
+
+The collector's `8888` is no longer published. `otelcol-contrib` has served no
+internal metrics there by default since the telemetry defaults changed, and this
+config has no `service.telemetry` block, so the port forwarded to nothing.
+Measured: the container starts only `4317` and `4318`.
 
 ### Readiness
 

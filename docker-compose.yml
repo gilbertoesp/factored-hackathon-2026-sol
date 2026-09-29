@@ -106,7 +106,12 @@ services:
       # anything on the network, so these are loopback only.
       - "127.0.0.1:4317:4317" # OTLP gRPC receiver
       - "127.0.0.1:4318:4318" # OTLP HTTP receiver
-      - "127.0.0.1:8888:8888" # Collector internal metrics
+      # 8888 is deliberately not published. otelcol-contrib has served no
+      # internal metrics on it by default since the telemetry defaults changed,
+      # and this config has no service.telemetry block, so the previous
+      # revision forwarded a port nothing listened on. Publishing it was pure
+      # surface with no diagnostic behind it. To bring it back, add
+      # service.telemetry.metrics to otel-collector-config.yaml first.
     environment:
       # Base64 encoded credentials (email:password or ingestion token) for
       # OpenObserve. Required: the previous inline default was the same
