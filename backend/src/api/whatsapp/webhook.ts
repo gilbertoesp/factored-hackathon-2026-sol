@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { defaultWebhookDeps } from "./deps";
+import { parseNotification } from "./schema";
 import { SIGNATURE_HEADER, verifySecret, verifySignature } from "./signature";
 
 /**
@@ -95,6 +96,13 @@ export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 
 		if (!verifySignature(rawBody, signature, deps.secrets.appSecret)) {
 			return c.json({ status: "unauthorized" }, 401);
+		}
+
+		// Verification first, then parsing: a valid signature authenticates the
+		// sender but does not make the body trustworthy.
+		const parsed = parseNotification(rawBody);
+		if (!parsed.ok) {
+			return c.json({ status: "invalid_payload", issues: parsed.issues }, 400);
 		}
 
 		return c.json({ status: "ok" }, 200);
