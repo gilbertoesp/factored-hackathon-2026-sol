@@ -82,6 +82,29 @@ export const notificationSchema = z
 
 export type WhatsAppNotification = z.infer<typeof notificationSchema>;
 
+/**
+ * Dedupe keys for every id in the notification, namespaced by WABA entry and
+ * payload field. Meta reuses message ids across WABAs, and a message id can
+ * equal a status id, so an unnamespaced key would suppress real deliveries.
+ */
+export function notificationIds(notification: WhatsAppNotification): string[] {
+	const ids: string[] = [];
+	for (const entry of notification.entry) {
+		for (const change of entry.changes) {
+			if (change.field === "messages") {
+				for (const message of change.value.messages) {
+					ids.push(`${entry.id}:messages:${message.id}`);
+				}
+			} else {
+				for (const status of change.value.statuses) {
+					ids.push(`${entry.id}:statuses:${status.id}`);
+				}
+			}
+		}
+	}
+	return ids;
+}
+
 /** Parses the raw body, returning issue paths only — never the body itself. */
 export function parseNotification(
 	rawBody: string,

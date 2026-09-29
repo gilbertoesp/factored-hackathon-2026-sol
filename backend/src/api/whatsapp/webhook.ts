@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import { defaultWebhookDeps } from "./deps";
-import { parseNotification } from "./schema";
+import { notificationIds, parseNotification } from "./schema";
 import { SIGNATURE_HEADER, verifySecret, verifySignature } from "./signature";
 
 /**
@@ -103,6 +103,17 @@ export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 		const parsed = parseNotification(rawBody);
 		if (!parsed.ok) {
 			return c.json({ status: "invalid_payload", issues: parsed.issues }, 400);
+		}
+
+		const now = deps.clock();
+		const ids = notificationIds(parsed.value);
+
+		// A replay is acknowledged with 200 rather than an error: Meta retries
+		// unacknowledged notifications for 36 hours, so a non-2xx would loop.
+		for (const id of ids) {
+			if (deps.seen.add(id, now)) {
+				return c.json({ status: "duplicate" }, 200);
+			}
 		}
 
 		return c.json({ status: "ok" }, 200);
