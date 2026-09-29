@@ -1,5 +1,6 @@
 import { createHmac } from "node:crypto";
 import {
+	DelegationKeyRing,
 	InMemoryGrantStore,
 	RecordingTelemetry,
 	SeenMessageIds,
@@ -19,12 +20,18 @@ export function makeDeps(overrides: Partial<WebhookDeps> = {}): {
 	advance: (ms: number) => void;
 } {
 	let now = 1_700_000_000_000;
+	// A fresh key ring per case, so a token minted in one test can never verify
+	// against another test's keys.
+	const keyRing = new DelegationKeyRing();
 	const deps: WebhookDeps = {
 		clock: () => now,
 		secrets: { appSecret: APP_SECRET, verifyToken: VERIFY_TOKEN },
 		seen: new SeenMessageIds(),
 		rateLimit: new WabaTokenBucket({ capacity: 25, windowMs: 60_000 }),
-		grants: new InMemoryGrantStore(),
+		grants: new InMemoryGrantStore({
+			mintToken: (input) => keyRing.mint(input),
+		}),
+		keyRing,
 		telemetry: new RecordingTelemetry(),
 		dispatch: () => {},
 		...overrides,

@@ -93,8 +93,10 @@ test("a grant that was never used is still refused after expiry", async () => {
 test("the grant store is bounded and drops the oldest entries", async () => {
 	const store = new InMemoryGrantStore({ maxEntries: 3, ttlMs: 60_000 });
 	const now = 1_700_000_000_000;
-	const ids = Array.from({ length: 5 }, () =>
-		store.issue("15551234567", "whatsapp:write", now),
+	const ids = await Promise.all(
+		Array.from({ length: 5 }, () =>
+			store.issue("15551234567", "whatsapp:write", now),
+		),
 	);
 
 	expect(store.consume(ids[0], now)).toBeNull();

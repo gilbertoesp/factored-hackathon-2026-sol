@@ -21,8 +21,14 @@ export interface WebhookDeps {
 	seen: MessageIdSet;
 	rateLimit: TokenBucket;
 	grants: GrantStore;
+	/** Signing keys for the delegation token, for the Exit Seam to verify with. */
+	keyRing: KeyRing;
 	telemetry: TelemetryPort;
 	dispatch: DispatchPort;
+}
+
+export interface KeyRing {
+	ready(): Promise<{ publicJwk: unknown }>;
 }
 
 export interface MessageIdSet {
@@ -38,11 +44,17 @@ export interface TokenBucket {
 export interface GrantRecord {
 	subject: string;
 	scope: string;
+	/** RFC 8693 delegation token the Exit Seam presents to the Cloud API. */
+	token: string;
 	expiresAt: number;
 }
 
 export interface GrantStore {
-	issue(subject: string, scope: string, now: number): string;
+	/**
+	 * Mints a single-use grant for a subject, embedding the delegation token the
+	 * Exit Seam will present. Async because signing the token is async.
+	 */
+	issue(subject: string, scope: string, now: number): Promise<string>;
 	/** Consumes the grant. Returns null when unknown, already used, or expired. */
 	consume(id: string, now: number): GrantRecord | null;
 }
@@ -148,7 +160,7 @@ export function createWebhookRouter(overrides?: Partial<WebhookDeps>): Hono {
 
 		const subject = firstSubject(parsed.value);
 		const grantId = subject
-			? deps.grants.issue(subject, WRITE_SCOPE, now)
+			? await deps.grants.issue(subject, WRITE_SCOPE, now)
 			: undefined;
 
 		return c.json({ status: "ok", grant_id: grantId }, 200);

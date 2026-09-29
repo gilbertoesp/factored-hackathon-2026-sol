@@ -1,8 +1,14 @@
 import { randomUUID } from "node:crypto";
+import {
+	createDelegationKeys,
+	type DelegationKeys,
+	mintDelegationToken,
+} from "./delegation";
 import type {
 	DispatchPort,
 	GrantRecord,
 	GrantStore,
+	KeyRing,
 	MessageIdSet,
 	SpanAttributes,
 	SpanHandle,
@@ -10,6 +16,9 @@ import type {
 	TokenBucket,
 	WebhookDeps,
 } from "./webhook";
+
+/** The acting party named in every delegation token this service mints. */
+export const DELEGATION_ACTOR = "agent";
 
 /**
  * Bounded, TTL-evicting set of seen message ids. Meta retries failed
@@ -98,19 +107,32 @@ export class WabaTokenBucket implements TokenBucket {
 export class InMemoryGrantStore implements GrantStore {
 	readonly ttlMs: number;
 	readonly maxEntries: number;
-	private readonly grants = new Map<
-		string,
-		{ subject: string; scope: string; expiresAt: number }
-	>();
+	/** Mints the delegation token embedded in each grant. */
+	readonly mintToken: (input: {
+		subject: string;
+		scope: string;
+	}) => Promise<string>;
+	private readonly grants = new Map<string, GrantRecord>();
 
-	constructor(options: { ttlMs?: number; maxEntries?: number } = {}) {
+	constructor(
+		options: {
+			ttlMs?: number;
+			maxEntries?: number;
+			mintToken?: (input: {
+				subject: string;
+				scope: string;
+			}) => Promise<string>;
+		} = {},
+	) {
 		this.ttlMs = options.ttlMs ?? 60_000;
 		this.maxEntries = options.maxEntries ?? 200;
+		this.mintToken = options.mintToken ?? (async () => "");
 	}
 
-	issue(subject: string, scope: string, now: number): string {
+	async issue(subject: string, scope: string, now: number): Promise<string> {
 		const id = randomUUID();
-		this.grants.set(id, { subject, scope, expiresAt: now + this.ttlMs });
+		const token = await this.mintToken({ subject, scope });
+		this.grants.set(id, { subject, scope, token, expiresAt: now + this.ttlMs });
 		while (this.grants.size > this.maxEntries) {
 			const oldest = this.grants.keys().next();
 			if (oldest.done) break;
@@ -152,6 +174,32 @@ export class RecordingTelemetry implements TelemetryPort {
 /** Placeholder until the Cloud API dispatch is implemented. */
 export const noopDispatch: DispatchPort = () => {};
 
+/**
+ * Signing keys for delegation tokens, generated lazily per process. The token
+ * lifetime is 60s and verification is same-process, so persisting keys would add
+ * distribution risk without buying anything. `ready()` is awaited by the first
+ * mint or verify; `current()` is only valid once `ready()` has resolved.
+ */
+export class DelegationKeyRing implements KeyRing {
+	private pending: Promise<DelegationKeys> | undefined;
+
+	ready(): Promise<DelegationKeys> {
+		this.pending ??= createDelegationKeys();
+		return this.pending;
+	}
+
+	mint(input: { subject: string; scope: string }): Promise<string> {
+		return this.ready().then((keys) =>
+			mintDelegationToken({
+				subject: input.subject,
+				actor: DELEGATION_ACTOR,
+				requestedScope: input.scope,
+				keys,
+			}),
+		);
+	}
+}
+
 export function defaultWebhookDeps(): WebhookDeps {
 	return {
 		clock: () => Date.now(),
@@ -161,8 +209,13 @@ export function defaultWebhookDeps(): WebhookDeps {
 		},
 		seen: new SeenMessageIds(),
 		rateLimit: new WabaTokenBucket(),
-		grants: new InMemoryGrantStore(),
+		grants: new InMemoryGrantStore({
+			mintToken: (input) => keyRing.mint(input),
+		}),
+		keyRing,
 		telemetry: new RecordingTelemetry(),
 		dispatch: noopDispatch,
 	};
 }
+
+const keyRing = new DelegationKeyRing();

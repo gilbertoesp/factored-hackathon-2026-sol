@@ -1,6 +1,8 @@
 import { Hono } from "hono";
+import type { JWK } from "jose";
 import { z } from "zod";
-import { defaultWebhookDeps } from "./deps";
+import { verifyDelegationToken } from "./delegation";
+import { DELEGATION_ACTOR, defaultWebhookDeps } from "./deps";
 import type { WebhookDeps } from "./webhook";
 
 const handlerBodySchema = z
@@ -14,8 +16,8 @@ export function createHandlerRouter(overrides?: Partial<WebhookDeps>): Hono {
 	const deps: WebhookDeps = { ...defaultWebhookDeps(), ...overrides };
 
 	// The Exit Seam is mounted on a public path, so the grant is the gate: 122
-	// bits of randomness that are single-use and short-lived. The subject comes
-	// from the grant, never from the request body.
+	// bits of randomness that are single-use and short-lived. The subject, scope
+	// and token all come from the grant record, never from the request body.
 	router.post("/handler", async (c) => {
 		const parsed = handlerBodySchema.safeParse(await safeJson(c.req.raw));
 		if (!parsed.success) {
@@ -25,6 +27,19 @@ export function createHandlerRouter(overrides?: Partial<WebhookDeps>): Hono {
 		const grant = deps.grants.consume(parsed.data.grant_id, deps.clock());
 		if (grant === null) {
 			return c.json({ status: "unauthorized" }, 401);
+		}
+
+		// A grant alone is not authority: the delegation token it carries must
+		// still verify, name this service as its audience, and grant write scope
+		// to an authorized actor. Cloud API dispatch itself is still planned.
+		const { publicJwk } = await deps.keyRing.ready();
+		const verified = await verifyDelegationToken(
+			grant.token,
+			publicJwk as JWK,
+			{ expectedActor: DELEGATION_ACTOR, requiredScope: "whatsapp:write" },
+		);
+		if (!verified.ok) {
+			return c.json({ status: "forbidden" }, 403);
 		}
 
 		return c.json({ status: "accepted" }, 200);
