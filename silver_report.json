@@ -1,0 +1,66 @@
+{
+  "tables": [
+    {
+      "table": "branches",
+      "bronze": 350,
+      "silver": 350,
+      "quarantined": 0,
+      "reasons": {},
+      "nullable_cast_failures": {},
+      "seconds": 0.3
+    },
+    {
+      "table": "customers",
+      "bronze": 501,
+      "silver": 500,
+      "quarantined": 1,
+      "reasons": {
+        "duplicate_pk": 1
+      },
+      "nullable_cast_failures": {},
+      "seconds": 0.3
+    },
+    {
+      "table": "products",
+      "bronze": 1320,
+      "silver": 1319,
+      "quarantined": 1,
+      "reasons": {
+        "fk_customer_id": 1
+      },
+      "nullable_cast_failures": {},
+      "seconds": 0.3
+    },
+    {
+      "table": "transactions",
+      "bronze": 3002,
+      "silver": 2990,
+      "quarantined": 12,
+      "reasons": {
+        "fk_product_id": 4,
+        "duplicate_pk": 2,
+        "null_amount": 1,
+        "fk_customer_id": 1,
+        "null_customer_id": 1,
+        "invalid_amount": 1,
+        "invalid_process_date": 1,
+        "null_currency": 1
+      },
+      "nullable_cast_failures": {
+        "fraud_score": 1
+      },
+      "seconds": 0.5
+    }
+  ],
+  "ge_failures": [
+    {
+      "table": "customers",
+      "check": "expect_table_row_count_to_equal(fk_registration_branch_id->branches)",
+      "severity": "warning",
+      "detail": {
+        "observed_value": 500
+      }
+    }
+  ],
+  "ge_checks": 47
+}
