@@ -35,6 +35,10 @@ services:
       - BACKEND_API_URL=${BACKEND_API_URL:-http://backend:4000}
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
       - OTEL_SERVICE_NAME=frontend-nextjs
+      # Server-side only: the advisor view sends it to the backend; the browser
+      # never sees it. ADVISOR_UI_PASSWORD gates /asesor with basic auth.
+      - ADVISOR_API_TOKEN=${ADVISOR_API_TOKEN:-}
+      - ADVISOR_UI_PASSWORD=${ADVISOR_UI_PASSWORD:-}
     read_only: true
     tmpfs:
       - /tmp
@@ -78,6 +82,8 @@ services:
       # OTel Tracing & Log Export configuration
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
       - OTEL_SERVICE_NAME=backend-agent-service
+      # Optional: unset turns the advisor API (/api/handoff) off with a 503.
+      - ADVISOR_API_TOKEN=${ADVISOR_API_TOKEN:-}
     depends_on:
       db:
         condition: service_healthy

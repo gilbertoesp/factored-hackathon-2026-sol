@@ -13,6 +13,8 @@ export interface HandoffStore {
 	get(caseId: string): Promise<HandoffTicket | null>;
 	/** Newest first, for the advisor view. */
 	listByQueue(queue: string): Promise<HandoffTicket[]>;
+	/** Newest first, every queue. */
+	list(): Promise<HandoffTicket[]>;
 }
 
 export function createMemoryHandoffStore(): HandoffStore {
@@ -30,9 +32,18 @@ export function createMemoryHandoffStore(): HandoffStore {
 			return tickets.get(caseId) ?? null;
 		},
 		async listByQueue(queue) {
-			return [...tickets.values()]
-				.filter((t) => t.queue === queue)
-				.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+			return newestFirst(
+				[...tickets.values()].filter((t) => t.queue === queue),
+			);
+		},
+		async list() {
+			return newestFirst([...tickets.values()]);
 		},
 	};
+}
+
+function newestFirst(tickets: HandoffTicket[]): HandoffTicket[] {
+	return tickets.sort(
+		(a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt),
+	);
 }

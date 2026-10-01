@@ -142,3 +142,91 @@ input:disabled {
 	clip: rect(0 0 0 0);
 	white-space: nowrap;
 }
+
+/* ------------------------------------------------ advisor view */
+
+.panel {
+	width: 100%;
+	max-width: 1000px;
+	background: var(--surface);
+	border: 1px solid var(--border);
+	border-radius: 12px;
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+h2 {
+	font-size: 1rem;
+	margin: 0 0 6px;
+}
+
+a {
+	color: var(--accent);
+}
+
+.table-wrap {
+	overflow-x: auto;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 0.9rem;
+}
+
+th,
+td {
+	text-align: left;
+	padding: 6px 8px;
+	border-bottom: 1px solid var(--border);
+	vertical-align: top;
+}
+
+th {
+	color: var(--muted);
+	font-weight: 600;
+}
+
+.tag {
+	display: inline-block;
+	padding: 1px 8px;
+	border-radius: 999px;
+	font-size: 0.8rem;
+	border: 1px solid var(--border);
+	margin-right: 4px;
+}
+
+.tag.alta,
+.tag.alert {
+	background: #fde2e1;
+	border-color: #f3b2ae;
+	color: #8a1c14;
+}
+
+.notice {
+	background: #fff4d6;
+	color: #5c4400;
+	border-radius: 8px;
+	padding: 10px 12px;
+	margin: 0;
+}
+
+.risk {
+	color: #d92d20;
+	font-weight: 700;
+}
+
+blockquote {
+	margin: 0 0 6px;
+	padding: 8px 12px;
+	border-left: 3px solid var(--accent);
+	background: var(--agent);
+	border-radius: 0 8px 8px 0;
+}
+
+.ficha section {
+	border-top: 1px solid var(--border);
+	padding-top: 12px;
+}

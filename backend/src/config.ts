@@ -10,6 +10,12 @@ const envSchema = z.object({
 	PORT: z.coerce.number().int().min(1).max(65_535).default(4000),
 	WHATSAPP_APP_SECRET: z.string().min(1),
 	WHATSAPP_VERIFY_TOKEN: z.string().min(1),
+	// Optional: without it the advisor view is off. Blank counts as unset, since
+	// compose passes ${ADVISOR_API_TOKEN:-} as an empty string.
+	ADVISOR_API_TOKEN: z.preprocess(
+		(v) => (v === "" ? undefined : v),
+		z.string().min(16).optional(),
+	),
 });
 
 export interface Config {
@@ -18,6 +24,7 @@ export interface Config {
 		appSecret: string;
 		verifyToken: string;
 	};
+	advisorToken: string | undefined;
 }
 
 export class ConfigError extends Error {
@@ -49,5 +56,6 @@ export function loadConfig(env: Record<string, string | undefined>): Config {
 			appSecret: result.data.WHATSAPP_APP_SECRET,
 			verifyToken: result.data.WHATSAPP_VERIFY_TOKEN,
 		},
+		advisorToken: result.data.ADVISOR_API_TOKEN,
 	};
 }
