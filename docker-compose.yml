@@ -100,7 +100,7 @@ services:
     image: postgres:16-alpine
     container_name: ai_app_postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -110,6 +110,34 @@ services:
     networks:
       - ai_app_network
     restart: unless-stopped
+
+  # =========================================================================
+  # 6. Data Pipeline (ETL de una sola corrida: CSV crudos -> esquema bank)
+  #    docker compose --profile data run --rm data-processor
+  # =========================================================================
+  data-processor:
+    build:
+      context: ./data_pipeline
+      dockerfile: Dockerfile
+    container_name: bank_data_pipeline
+    profiles: ["data"]
+    volumes:
+      - ./data_pipeline/tablas_amazon:/data:ro
+    environment:
+      - ETL_INPUT_DIR=/data
+      - ETL_WINDOW_DAYS=${ETL_WINDOW_DAYS:-}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=postgres
+      - DB_SCHEMA=bank
+    networks:
+      - ai_app_network
+    depends_on:
+      - db
+    restart: "no"
+
 
 networks:
   ai_app_network:
