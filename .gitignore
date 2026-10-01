@@ -1,3 +1,9 @@
 node_modules/
 .env
 dist/
+# Datos y salidas
+*.parquet
+*.csv
+data/
+datos_limpios_bank_bot/
+.env
