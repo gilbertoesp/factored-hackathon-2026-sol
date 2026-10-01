@@ -1,8 +1,103 @@
-# Fullstack AI WhatsApp Integration
+# Disputes agent for unrecognized and wrongful card charges
+
+An agent that turns "I don't recognize the charge from Tuesday" into a verified claim on the exact transaction, with risk assessed, in Spanish and Portuguese, and hands the advisor a ready ficha instead of a 7-minute call.
+
+Factored AI & Data Hackathon 2026. Users: cardholders in Mexico, Colombia and Argentina (ES) and Brazil (PT-BR), and the back-office advisor who receives the cases the agent does not close.
+
+## The problem
+
+In the hackathon dataset (LATAM bank, 2023-06 to 2026-06):
+
+- 24,491 complaints are *cargo no reconocido* (12,297) or *cobro indebido* (12,194).
+- A complaint call takes 7.2 minutes of advisor time on average (`avg_handle_min` for *Queja*).
+- `fraud_score > 30` was fraud in 100% of cases (2,373 of 2,373). At 30 or below the score does not separate fraud (0.03% to 0.05%), so the agent relies on what the customer reports.
+
+## How it works
+
+```
+customer ──> web chat / WhatsApp ──> conversation API ──> rules engine (R01-R28) ──> tools ──> verify ──> reply or ficha
+                                          │                    ▲
+                                          └── classifier ──────┘   (the LLM only talks; it has no tool permissions)
+```
+
+1. **Authenticate**: simulated OTP. Nothing about the customer is revealed before it (R01, R02, R27).
+2. **Understand**: intent classifier (multilingual embeddings + logistic regression). Low confidence asks one targeted question, at most twice (R05, R06).
+3. **Identify the transaction**: search only the session customer's transactions in a 120-day window, ±1 day of tolerance. With several candidates the customer picks from cards; the system never chooses blindly (R09-R16).
+4. **Decide**: block and open a fraud claim when `fraud_score > 30`; open a dispute otherwise; reverse small first-time fees automatically (R17-R23).
+5. **Verify**: every action is re-read before the customer is told it happened (R24-R26).
+6. **Escalate**: every derivation produces a structured ficha the advisor reads instead of the transcript (R28).
+
+The policy lives in `docs/matriz_decision_es.xlsx`. `backend/scripts/export_rules.py` exports it to `backend/src/rules/rules.json`, which the engine (`backend/src/rules/engine.ts`) reads. Permissions and business logic are code with one test per rule, not prompt instructions.
+
+## Status
+
+| Part | Path | Status |
+| --- | --- | --- |
+| Rules engine R01-R28 | `backend/src/rules/` | tested |
+| Ficha de derivación (schema, store, migration) | `backend/src/handoff/`, `supabase/migrations/0002_handoff_tickets.sql` | tested (in-memory store; Supabase adapter planned) |
+| Advisor API and view | `backend/src/handoff/router.ts`, `frontend/app/asesor/` | tested |
+| Conversation API contract | `backend/src/conversation/contract.ts`, `docs/contrato_conversacion.md` | tested (schema) |
+| Conversation API | | planned |
+| Web chat | `frontend/app/chat.tsx` | implemented, tested against a stub of the contract |
+| WhatsApp seams | `backend/src/api/whatsapp/` | tested |
+| Data pipeline (ETL) | | planned |
+| Intent classifier service `ml/` | | planned |
+| Evaluation harness | | planned |
+
+## Quick start
+
+```bash
+cp .env.example .env              # fill in every required value
+docker compose up -d --build      # backend + db + otel + openobserve
+docker compose --profile frontend up -d --build   # web chat on http://127.0.0.1:3000
+```
+
+Without Docker:
+
+```bash
+bun install
+cd backend && bun test            # every backend test
+cd frontend && bun run dev        # web chat on http://localhost:3000
+```
+
+The advisor view (`/asesor`) is off unless `ADVISOR_API_TOKEN` (backend and frontend) and `ADVISOR_UI_PASSWORD` (frontend, user `asesor`) are set.
+
+To change the policy, edit `docs/matriz_decision_es.xlsx` in Excel, save, and run `python backend/scripts/export_rules.py` (needs `openpyxl`). The engine tests fail if a rule is left without a test.
+
+## Data sources
+
+| Source | Origin | Used for |
+| --- | --- | --- |
+| LATAM bank dataset (hackathon) | Synthetic, provided by the organizers | Transactions, customers, products, complaints. All main metrics run on cases anchored in real dataset transactions. |
+| BANKING77 | External, written by people, CC BY 4.0; translated to ES and PT-BR with human review | Test set for the intent classifier |
+| Team utterances | Written by the team, reviewed by 2 people | Classifier training set |
+| Fee and duplicate-charge fixtures | Synthetic, written by the team | Only R21-R23 (fees and duplicates do not exist in the dataset). Reported separately as functional coverage. |
+
+No customer records, credentials or restricted data are committed. Only the customer's message and the minimum transaction fields (merchant, date, amount) reach an external model; never document numbers, emails, phones or internal ids.
+
+## Evaluation
+
+Planned: one command that reports safe resolution, containment, derivations, unsafe outcomes (with denominator), p50/p95 latency and cost per case, per language, against the current-process baseline.
+
+## Known limitations
+
+- `transaction_date` is `process_date + 1 day` in 25% of rows (never more); searches use ±1 day.
+- `amount_usd` is empty whenever `currency = USD`, and Mexico has no MXN rows although the data dictionary says so. Amounts are normalized as `coalesce(amount_usd, amount if USD)`.
+- The dataset's call transcripts do not match their labels, so the classifier is trained and tested on separate, declared sources.
+- Thresholds marked as business assumptions (120-day window, 25 USD reversal limit, one reversal per 12 months) need validation with the bank.
+- Savings in the sizing sheet are projections, not production measurements.
+
+---
+
+# Backend reference
+
+## WhatsApp seams
 
 WhatsApp inbound messages arrive at a public webhook, are authenticated with Supabase OAuth, then dispatch to an internal handler that replies through the WhatsApp Cloud API. Two seams define the system. Everything else is private.
 
 ## Tree
+
+Partial: the WhatsApp seams. Newer folders are listed under Status above.
 
 ```
 .
@@ -68,6 +163,11 @@ WhatsApp ──POST /api/whatsapp/webhook──> Entry Seam ──> Exit Seam �
 | GET | `/api/whatsapp/webhook` | `backend/src/api/whatsapp/webhook.ts` | tested |
 | POST | `/api/whatsapp/webhook` | `backend/src/api/whatsapp/webhook.ts` | tested |
 | POST | `/api/whatsapp/handler` | `backend/src/api/whatsapp/handler.ts` | tested |
+| GET | `/api/handoff` | `backend/src/handoff/router.ts` | tested |
+| GET | `/api/handoff/:caseId` | `backend/src/handoff/router.ts` | tested |
+| POST | `/api/session/otp` | contract: `backend/src/conversation/contract.ts` | planned |
+| POST | `/api/session/verify` | contract: `backend/src/conversation/contract.ts` | planned |
+| POST | `/api/conversation/messages` | contract: `backend/src/conversation/contract.ts` | planned |
 
 `Status` values: `planned`, `implemented`, `tested`.
 
@@ -190,7 +290,7 @@ Test: `backend/src/api/whatsapp/handler.test.ts`, `grants.test.ts`,
 ## Test Coverage
 
 - `bun test` runs every test in `backend/src`.
-- 145 tests across 14 files.
+- 219 tests across 18 files.
 
 ## Setup
 
@@ -214,7 +314,8 @@ compose actually reads and whether it is required.
 | `WHATSAPP_TOKEN` | no | Cloud API credential. Planned. |
 | `SUPABASE_URL` | no | Planned. |
 | `SUPABASE_SERVICE_ROLE_KEY` | no | Planned. |
-| `SUPABASE_ANON_KEY` | no | commented-out `frontend` |
+| `ADVISOR_API_TOKEN` | no | backend `/api/handoff` and the frontend server. Unset turns the advisor view off. At least 16 characters. |
+| `ADVISOR_UI_PASSWORD` | no | frontend basic auth on `/asesor` (user `asesor`). Unset turns the page off. |
 | `POSTGRES_DB` | no (default `postgres`) | `db` |
 | `POSTGRES_USER` | no (default `postgres`) | `db` |
 | `POSTGRES_PASSWORD` | **yes** | `db` |
@@ -241,8 +342,8 @@ docker compose up --build
 ```
 
 Services: `backend` (`4000`), `otel-collector` (`4317`, `4318`),
-`openobserve` (`5080`), `db` (`5432`). The `frontend` service is commented out
-in `docker-compose.yml` until `frontend/Dockerfile` exists.
+`openobserve` (`5080`), `db` (`5432`). `frontend` (`3000`) is in the
+`frontend` profile: `docker compose --profile frontend up -d --build`.
 
 ### Network bindings
 
@@ -327,7 +428,7 @@ bun run check
 - Exact paths only. One route, one file.
 - Unimplemented work is documented as `planned`.
 - A new endpoint requires a failing seam test first.
-- `frontend/package.json` exists; the Next.js app is planned.
+- The web app is in `frontend/` (Next.js 15, standalone build).
 - Backend routes live in `backend/src/api/whatsapp/`.
 
 ## License
