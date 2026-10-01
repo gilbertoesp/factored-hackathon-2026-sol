@@ -36,6 +36,7 @@ export const RULE_IDS = [
 	"R26",
 	"R27",
 	"R28",
+	"R29",
 ] as const;
 
 export type RuleId = (typeof RULE_IDS)[number];

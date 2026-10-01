@@ -1,7 +1,7 @@
 import { policy as defaultPolicy, type Policy, type RuleId } from "./policy";
 
 /**
- * The rules engine for the disputes agent (R01 to R28).
+ * The rules engine for the disputes agent (R01 to R29).
  *
  * A pure function from verified facts to one decision. It never calls a tool
  * and never reads the conversation: the orchestrator gathers facts (session,
@@ -118,18 +118,6 @@ export type Decision =
 			tools: ToolCall[];
 			handoff: null;
 			message: string | null;
-	  }
-	| {
-			/**
-			 * No rule covers the facts. Fails closed: a derivation, never an
-			 * action. Each occurrence is a gap to add to the matrix.
-			 */
-			kind: "fallback";
-			ruleId: null;
-			tools: ToolCall[];
-			handoff: Handoff;
-			message: string;
-			metricOutcome: string;
 	  };
 
 const FICHA: ToolCall = { name: "handoff.crear_ficha" };
@@ -316,7 +304,13 @@ export function decide(facts: Facts, p: Policy = defaultPolicy): Decision {
 				derive("R22"),
 			);
 		}
-		return fallback(p);
+		// A purchase the customer recognizes but disputes the amount of: a
+		// dispute with the merchant, never an automatic reversal.
+		return rule(
+			"R29",
+			[{ name: "reclamo.abrir", args: { tipo: "cobro_indebido" } }],
+			derive("R29"),
+		);
 	}
 
 	// cargo_no_reconocido
@@ -362,15 +356,4 @@ export function decide(facts: Facts, p: Policy = defaultPolicy): Decision {
 		[{ name: "reclamo.abrir", args: { tipo: "disputa" } }, ...block],
 		derive("R20"),
 	);
-}
-
-function fallback(p: Policy): Decision {
-	return {
-		kind: "fallback",
-		ruleId: null,
-		tools: [FICHA],
-		handoff: { queue: "Asesor reclamos", priority: "normal" },
-		message: p.rules.R28.message,
-		metricOutcome: "Derivación (sin regla)",
-	};
 }

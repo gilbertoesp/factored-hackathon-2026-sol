@@ -462,11 +462,21 @@ describe("4 Decidir: cobro indebido", () => {
 		expect(d.ruleId).not.toBe("R23");
 	});
 
-	test("a wrongful charge no rule covers fails closed to an advisor", () => {
-		const d = decide(facts(fee));
-		expect(d.kind).toBe("fallback");
-		expect(d.handoff).not.toBeNull();
-		expect(tools(d)).toEqual(["handoff.crear_ficha"]);
+	test("R29: a wrongful charge on a purchase opens a dispute with the merchant", () => {
+		const d = expectRule(decide(facts(fee)), "R29");
+		expect(d.tools[0]).toEqual({
+			name: "reclamo.abrir",
+			args: { tipo: "cobro_indebido" },
+		});
+		expect(tools(d)).not.toContain("comision.revertir");
+		expect(tools(d)).not.toContain("tarjeta.bloquear");
+		expect(d.handoff?.queue).toBe("Back office disputas");
+	});
+
+	test("R29: a small purchase is still not reversed automatically", () => {
+		const d = decide(facts({ ...fee, transaction: { amountUsd: 3 } }));
+		expect(d.ruleId).toBe("R29");
+		expect(tools(d)).not.toContain("comision.revertir");
 	});
 });
 
@@ -561,6 +571,7 @@ describe("policy export", () => {
 				intent: { label: "cobro_indebido" },
 				transaction: { amountUsd: 500, duplicateGapMinutes: 1 },
 			}),
+			facts({ intent: { label: "cobro_indebido" } }),
 		];
 		for (const c of all) {
 			const d = decide(c);

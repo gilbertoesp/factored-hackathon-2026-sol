@@ -121,10 +121,12 @@ def read_rules(wb) -> list[dict]:
         rule["tools"] = [t.strip() for t in (rule["tools"] or "").split(";") if t.strip()]
         rules.append(rule)
 
+    # Rows follow the stage order, so a rule added later (R29 in stage 4) sits
+    # between older ids. What must hold is that ids are unique and contiguous.
     ids = [r["id"] for r in rules]
     expected = [f"R{n:02d}" for n in range(1, len(ids) + 1)]
-    if ids != expected:
-        sys.exit(f"IDs de regla fuera de secuencia: {ids}")
+    if sorted(ids) != expected:
+        sys.exit(f"IDs de regla repetidos o con huecos: {ids}")
     return rules
 
 

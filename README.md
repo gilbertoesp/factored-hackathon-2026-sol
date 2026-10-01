@@ -15,7 +15,7 @@ In the hackathon dataset (LATAM bank, 2023-06 to 2026-06):
 ## How it works
 
 ```
-customer ──> web chat / WhatsApp ──> conversation API ──> rules engine (R01-R28) ──> tools ──> verify ──> reply or ficha
+customer ──> web chat / WhatsApp ──> conversation API ──> rules engine (R01-R29) ──> tools ──> verify ──> reply or ficha
                                           │                    ▲
                                           └── classifier ──────┘   (the LLM only talks; it has no tool permissions)
 ```
@@ -23,7 +23,7 @@ customer ──> web chat / WhatsApp ──> conversation API ──> rules engi
 1. **Authenticate**: simulated OTP. Nothing about the customer is revealed before it (R01, R02, R27).
 2. **Understand**: intent classifier (multilingual embeddings + logistic regression). Low confidence asks one targeted question, at most twice (R05, R06).
 3. **Identify the transaction**: search only the session customer's transactions in a 120-day window, ±1 day of tolerance. With several candidates the customer picks from cards; the system never chooses blindly (R09-R16).
-4. **Decide**: block and open a fraud claim when `fraud_score > 30`; open a dispute otherwise; reverse small first-time fees automatically (R17-R23).
+4. **Decide**: block and open a fraud claim when `fraud_score > 30`; open a dispute otherwise; reverse small first-time fees automatically; a wrongful charge on a purchase becomes a dispute with the merchant (R17-R23, R29).
 5. **Verify**: every action is re-read before the customer is told it happened (R24-R26).
 6. **Escalate**: every derivation produces a structured ficha the advisor reads instead of the transcript (R28).
 
@@ -33,7 +33,7 @@ The policy lives in `docs/matriz_decision_es.xlsx`. `backend/scripts/export_rule
 
 | Part | Path | Status |
 | --- | --- | --- |
-| Rules engine R01-R28 | `backend/src/rules/` | tested |
+| Rules engine R01-R29 | `backend/src/rules/` | tested |
 | Ficha de derivación (schema, store, migration) | `backend/src/handoff/`, `supabase/migrations/0002_handoff_tickets.sql` | tested (in-memory store; Supabase adapter planned) |
 | Advisor API and view | `backend/src/handoff/router.ts`, `frontend/app/asesor/` | tested |
 | Conversation API contract | `backend/src/conversation/contract.ts`, `docs/contrato_conversacion.md` | tested (schema) |

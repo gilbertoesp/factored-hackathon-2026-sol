@@ -413,6 +413,24 @@
       "testCases": "Par duplicado bajo y sobre el límite"
     },
     {
+      "id": "R29",
+      "stage": "4 Decidir: cobro indebido",
+      "intent": "Cobro indebido",
+      "condition": "Compra reconocida con monto o cobro incorrecto (no es comisión ni duplicado)",
+      "action": "Abrir reclamo por cobro indebido con evidencia precargada y derivar a back office de disputas. Sin reversión automática ni bloqueo.",
+      "tools": [
+        "reclamo.abrir(tipo=cobro_indebido)",
+        "handoff.crear_ficha"
+      ],
+      "verification": "reclamo.estado = Open",
+      "message": "Abrimos el reclamo N.º [ID] por el cobro de [comercio]. El equipo de disputas lo revisará con el comercio; plazo de respuesta [SLA].",
+      "handoff": "Sí (back office, sin llamada)",
+      "queue": "Back office disputas",
+      "metricOutcome": "Resolución automática segura (caso registrado)",
+      "testDataOrigin": "Real",
+      "testCases": "Cobro mayor al acordado; suscripción cancelada que se sigue cobrando"
+    },
+    {
       "id": "R24",
       "stage": "5 Verificar",
       "intent": "Cualquiera con acción",

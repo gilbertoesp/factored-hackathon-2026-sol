@@ -23,9 +23,8 @@ const RULES_WITH_TRANSACTION = new Set([
 	"R20",
 	"R22",
 	"R23",
+	"R29",
 ]);
-
-export const ORIGIN_RULES = [...RULE_IDS, "SIN_REGLA"] as const;
 
 const transactionSchema = z.object({
 	transactionId: text,
@@ -54,7 +53,7 @@ export const handoffTicketSchema = z
 	.object({
 		caseId: text,
 		createdAt: z.string().datetime({ offset: true }),
-		originRule: z.enum(ORIGIN_RULES),
+		originRule: z.enum(RULE_IDS),
 		queue: text,
 		priority: z.enum(["normal", "alta"]),
 		alert: z.enum(["verificacion"]).nullable(),

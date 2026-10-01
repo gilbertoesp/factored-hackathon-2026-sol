@@ -16,7 +16,7 @@ create table if not exists public.handoff_tickets (
 	customer_id text,
 	ticket jsonb not null,
 	created_at timestamptz not null default now(),
-	constraint handoff_tickets_origin_rule check (origin_rule ~ '^(R(0[1-9]|1[0-9]|2[0-8])|SIN_REGLA)$'),
+	constraint handoff_tickets_origin_rule check (origin_rule ~ '^R(0[1-9]|1[0-9]|2[0-9])$'),
 	constraint handoff_tickets_queue_not_blank check (length(trim(queue)) > 0),
 	constraint handoff_tickets_priority check (priority in ('normal', 'alta')),
 	constraint handoff_tickets_language check (language in ('es', 'pt')),
