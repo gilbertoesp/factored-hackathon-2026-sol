@@ -6,4 +6,11 @@ dist/
 *.csv
 data/
 datos_limpios_bank_bot/
-.env
+tablas_amazon/
+# Documentos del hackathon: el diccionario trae las credenciales de S3
+Information_hackaton/
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
