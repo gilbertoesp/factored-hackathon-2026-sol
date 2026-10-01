@@ -17,28 +17,36 @@
 services:
   # =========================================================================
   # 1. Frontend Service (Next.js 15 App Router + React 19 + Vercel AI SDK)
-  #    planned: uncomment once frontend/Dockerfile exists
+  #    Profile "frontend": `docker compose --profile frontend up -d`.
+  #    No depends_on on backend, so the UI can be worked on alone; it reads
+  #    BACKEND_API_URL at request time. Supabase variables are added when the
+  #    chat starts using them (F02), not before: a required variable nothing
+  #    reads is a false blocker on local setup.
   # =========================================================================
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   container_name: ai_app_frontend
-  #   ports:
-  #     - "127.0.0.1:3000:3000"
-  #   environment:
-  #     - NODE_ENV=development
-  #     - NEXT_PUBLIC_SUPABASE_URL=${SUPABASE_URL}
-  #     - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:?set in .env}
-  #     - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
-  #     - OTEL_SERVICE_NAME=frontend-nextjs
-  #     - BACKEND_API_URL=http://backend:4000
-  #   depends_on:
-  #     backend:
-  #       condition: service_healthy
-  #   networks:
-  #     - ai_app_network
-  #   restart: unless-stopped
+  frontend:
+    profiles: ["frontend"]
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ai_app_frontend
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      - BACKEND_API_URL=${BACKEND_API_URL:-http://backend:4000}
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+      - OTEL_SERVICE_NAME=frontend-nextjs
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 512m
+    cpus: 1.0
+    networks:
+      - ai_app_network
+    restart: unless-stopped
 
   # =========================================================================
   # 2. Backend Service (Bun Agentic Workflow Runtime + MCP + Supabase RLS)
