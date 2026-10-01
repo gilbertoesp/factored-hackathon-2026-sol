@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import { defaultWebhookDeps } from "./api/whatsapp/deps";
 import { createHandlerRouter } from "./api/whatsapp/handler";
 import { createWebhookRouter, type WebhookDeps } from "./api/whatsapp/webhook";
+import { createHandoffRouter, type HandoffRouterDeps } from "./handoff/router";
+import { createMemoryHandoffStore } from "./handoff/store";
 
 /**
  * The outcome of boot-time environment validation. Passed in rather than
@@ -16,6 +18,8 @@ export interface HealthState {
 
 export interface AppOptions {
 	config?: HealthState;
+	/** Fichas for the advisor view. Off (no token) unless passed. */
+	handoff?: HandoffRouterDeps;
 }
 
 /**
@@ -70,7 +74,7 @@ export function createApp(
 	options: Partial<WebhookDeps> & AppOptions = {},
 ): Hono {
 	const app = new Hono();
-	const { config, ...overrides } = options;
+	const { config, handoff, ...overrides } = options;
 	const deps: WebhookDeps = { ...defaultWebhookDeps(), ...overrides };
 	const state: HealthState = config ?? { valid: true, errors: [] };
 
@@ -79,6 +83,15 @@ export function createApp(
 	app.route("/", healthRouter(state));
 	app.route("/api/whatsapp", createHandlerRouter(deps));
 	app.route("/api/whatsapp", createWebhookRouter(deps));
+	app.route(
+		"/api/handoff",
+		createHandoffRouter(
+			handoff ?? {
+				store: createMemoryHandoffStore(),
+				advisorToken: undefined,
+			},
+		),
+	);
 	return app;
 }
 
