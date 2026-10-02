@@ -37,8 +37,8 @@ El perfilado no encontró PK duplicadas en ninguna tabla (`profile.out`).
 
 ## Correcciones y hallazgos clave
 
-1. **México opera en USD.** Las transacciones con `transaction_country` México tienen
-   `currency = 'USD'` (≈ 2,1 M filas): no se convierten (tasa 1; `monto_usd = amount`).
+1. **México opera en USD.** Las transacciones con `transaction_country = 'México'` tienen
+   `currency = 'USD'` en el 100 % de los casos (2.105.794 filas): no se convierten (tasa 1; `monto_usd = amount`).
    Hay cruces de país/moneda esperables en datos sintéticos (p. ej. Argentina en COP),
    por lo que la moneda se toma siempre de la transacción, no del país.
 2. **`amount_usd` en COP/ARS.** En silver, `amount_usd` de origen solo viene informado en COP y ARS
@@ -61,7 +61,7 @@ El perfilado no encontró PK duplicadas en ninguna tabla (`profile.out`).
 - **`fraud_score` nulo en 885.157 transacciones (20 %).** Los valores presentes están en [0, 99,99].
   1.755 transacciones con `is_fraud = true` tienen `fraud_score < 50`. Hay que decidir cómo tratar los nulos
   antes de usar el score en el motor.
-- **País con dos grafías:** `Mexico` y `México` (≈ 20 k y 2,1 M filas). Normalizar antes de agrupar por país.
+- **País con dos grafías:** `Mexico` y `México` (40.515 y 2.105.794 filas). Normalizar antes de agrupar por país.
 - **FK "soft" de sucursales:** `service_agents.assigned_branch_id` (69 % huérfanos) y
   `customers.registration_branch_id` (100 % huérfanos) solo se reportan, no se ponen en cuarentena.
 - **Emails repetidos:** 150.000 clientes pero solo 91.289 emails distintos (sin resolver).
