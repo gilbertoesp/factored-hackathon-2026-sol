@@ -1,3 +1,13 @@
 __pycache__/
+*.pyc
 *.log
 *.out
+.env
+.env.*
+!.env.example
+gold_export/
+data/
+*.npz
+*.parquet
+*.csv
+.ipynb_checkpoints/
