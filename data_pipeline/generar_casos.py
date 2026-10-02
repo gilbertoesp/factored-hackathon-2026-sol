@@ -32,6 +32,7 @@ import psycopg
 from pydantic import BaseModel, ConfigDict
 
 from etl import CORTE, url_base_datos
+from txn_buscar import Consulta  # entrada de txn.buscar (D10)
 
 FECHA_REFERENCIA = CORTE.date()  # "hoy" para el agente: el dataset termina aquí
 DIR_SALIDA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "casos_prueba")
@@ -77,15 +78,6 @@ SCORE_BAJO = f"fraud_score <= {SCORE_BLOQUEO}"
 # ----------------------------------------------------------------------------
 class Estricto(BaseModel):
     model_config = ConfigDict(extra="forbid")
-
-
-class Consulta(Estricto):
-    """Lo que el cliente describe; entrada de txn.buscar."""
-    fecha_desde: date
-    fecha_hasta: date
-    monto: Optional[float] = None
-    moneda: Optional[str] = None
-    comercio: Optional[str] = None
 
 
 class Esperado(Estricto):
