@@ -6,17 +6,40 @@ import { z } from "zod";
  * later as a 401 on every webhook, which reads as a Meta outage rather than a
  * missing variable.
  */
-const envSchema = z.object({
-	PORT: z.coerce.number().int().min(1).max(65_535).default(4000),
-	WHATSAPP_APP_SECRET: z.string().min(1),
-	WHATSAPP_VERIFY_TOKEN: z.string().min(1),
-	// Optional: without it the advisor view is off. Blank counts as unset, since
-	// compose passes ${ADVISOR_API_TOKEN:-} as an empty string.
-	ADVISOR_API_TOKEN: z.preprocess(
-		(v) => (v === "" ? undefined : v),
-		z.string().min(16).optional(),
-	),
-});
+const envSchema = z
+	.object({
+		PORT: z.coerce.number().int().min(1).max(65_535).default(4000),
+		WHATSAPP_APP_SECRET: z.string().min(1),
+		WHATSAPP_VERIFY_TOKEN: z.string().min(1),
+		// Optional: without it the advisor view is off. Blank counts as unset, since
+		// compose passes ${ADVISOR_API_TOKEN:-} as an empty string.
+		ADVISOR_API_TOKEN: z.preprocess(
+			(v) => (v === "" ? undefined : v),
+			z.string().min(16).optional(),
+		),
+		// Optional pair: without both, fichas live in memory (lost on restart).
+		// One without the other is a typo, not a choice, so it fails boot.
+		SUPABASE_URL: z.preprocess(
+			(v) => (v === "" ? undefined : v),
+			z.string().url().optional(),
+		),
+		SUPABASE_SERVICE_ROLE_KEY: z.preprocess(
+			(v) => (v === "" ? undefined : v),
+			z.string().min(1).optional(),
+		),
+	})
+	.superRefine((env, ctx) => {
+		if (Boolean(env.SUPABASE_URL) !== Boolean(env.SUPABASE_SERVICE_ROLE_KEY)) {
+			const missing = env.SUPABASE_URL
+				? "SUPABASE_SERVICE_ROLE_KEY"
+				: "SUPABASE_URL";
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				path: [missing],
+				message: "set both Supabase variables or neither",
+			});
+		}
+	});
 
 export interface Config {
 	port: number;
@@ -25,6 +48,7 @@ export interface Config {
 		verifyToken: string;
 	};
 	advisorToken: string | undefined;
+	supabase: { url: string; serviceRoleKey: string } | undefined;
 }
 
 export class ConfigError extends Error {
@@ -57,5 +81,12 @@ export function loadConfig(env: Record<string, string | undefined>): Config {
 			verifyToken: result.data.WHATSAPP_VERIFY_TOKEN,
 		},
 		advisorToken: result.data.ADVISOR_API_TOKEN,
+		supabase:
+			result.data.SUPABASE_URL && result.data.SUPABASE_SERVICE_ROLE_KEY
+				? {
+						url: result.data.SUPABASE_URL,
+						serviceRoleKey: result.data.SUPABASE_SERVICE_ROLE_KEY,
+					}
+				: undefined,
 	};
 }

@@ -85,3 +85,33 @@ test("a rejected value is never echoed back", () => {
 	}
 	expect(message).not.toContain("super-secret-leak");
 });
+
+test("without Supabase variables the fichas stay in memory", () => {
+	expect(loadConfig(env()).supabase).toBeUndefined();
+	expect(
+		loadConfig(env({ SUPABASE_URL: "", SUPABASE_SERVICE_ROLE_KEY: "" }))
+			.supabase,
+	).toBeUndefined();
+});
+
+test("both Supabase variables enable the Supabase store", () => {
+	const config = loadConfig(
+		env({
+			SUPABASE_URL: "https://abc.supabase.co",
+			SUPABASE_SERVICE_ROLE_KEY: "service-role",
+		}),
+	);
+	expect(config.supabase).toEqual({
+		url: "https://abc.supabase.co",
+		serviceRoleKey: "service-role",
+	});
+});
+
+test("one Supabase variable without the other is rejected at boot", () => {
+	expect(() =>
+		loadConfig(env({ SUPABASE_URL: "https://abc.supabase.co" })),
+	).toThrow(/SUPABASE_SERVICE_ROLE_KEY/);
+	expect(() =>
+		loadConfig(env({ SUPABASE_SERVICE_ROLE_KEY: "service-role" })),
+	).toThrow(/SUPABASE_URL/);
+});

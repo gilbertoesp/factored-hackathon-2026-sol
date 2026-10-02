@@ -1,7 +1,9 @@
+import { createClient } from "@supabase/supabase-js";
 import type { Hono } from "hono";
 import { createApp } from "./app";
 import { ConfigError, loadConfig } from "./config";
 import { createMemoryHandoffStore } from "./handoff/store";
+import { createSupabaseHandoffStore } from "./handoff/store-supabase";
 import { createOtelTelemetry } from "./telemetry";
 
 interface Booted {
@@ -21,9 +23,18 @@ function boot(): Booted {
 				process.env.OTEL_EXPORTER_OTLP_ENDPOINT ?? "http://localhost:4318",
 		});
 
-		// In memory until the Supabase adapter lands; one store per process so
+		// Supabase when configured, memory otherwise. One store per process so
 		// handoff.crear_ficha and the advisor view see the same fichas.
-		const handoffStore = createMemoryHandoffStore();
+		const handoffStore = config.supabase
+			? createSupabaseHandoffStore(
+					createClient(config.supabase.url, config.supabase.serviceRoleKey, {
+						auth: { persistSession: false, autoRefreshToken: false },
+					}),
+				)
+			: createMemoryHandoffStore();
+		console.log(
+			`handoff store: ${config.supabase ? "supabase" : "memory (fichas are lost on restart)"}`,
+		);
 
 		return {
 			port: config.port,

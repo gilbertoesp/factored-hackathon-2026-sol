@@ -66,9 +66,9 @@ services:
       - "127.0.0.1:4000:4000"
     environment:
       - PORT=4000
-      # Not guarded: nothing on this branch reads them yet, and a required
-      # variable nothing consumes is a false blocker on local setup. Once the
-      # Supabase-backed code lands, promote these to :? guards.
+      # Optional pair: set both and the fichas (handoff_tickets, migration
+      # 0002) persist in Supabase; leave both blank and they live in memory.
+      # config.ts rejects one without the other at boot.
       - SUPABASE_URL=${SUPABASE_URL:-}
       - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-}
       # Required. config.ts refuses to boot without them, which is why the
