@@ -98,6 +98,26 @@ LEFT JOIN comp k ON k.customer_id = c.customer_id
 """
 
 
+def post_fixes(engine):
+    """Correcciones idempotentes sobre gold (se aplican tras construir o con las tablas existentes).
+
+    - Grafía canónica 'México' en transaction_country.
+    - fraud_score nulo (~20 %, aleatorio) se imputa con la mediana de las filas con score según is_fraud
+      (no fraude ~15, fraude ~49) y se marca en fraud_score_imputed. silver conserva el valor original (NULL).
+    """
+    t = f"{GOLD}.fact_transactions_usd"
+    with engine.begin() as c:
+        c.exec_driver_sql("SET LOCAL statement_timeout = 0")
+        c.exec_driver_sql(f"UPDATE {t} SET transaction_country = 'México' WHERE transaction_country = 'Mexico'")
+        c.exec_driver_sql(f"ALTER TABLE {t} ADD COLUMN IF NOT EXISTS fraud_score_imputed boolean NOT NULL DEFAULT false")
+        n = c.exec_driver_sql(f"""
+            WITH med AS (SELECT is_fraud, percentile_cont(0.5) WITHIN GROUP (ORDER BY fraud_score)::numeric(8,2) AS m
+                         FROM {t} WHERE fraud_score IS NOT NULL GROUP BY is_fraud)
+            UPDATE {t} f SET fraud_score = med.m, fraud_score_imputed = true
+            FROM med WHERE f.fraud_score IS NULL AND f.is_fraud = med.is_fraud""").rowcount
+    log.info("post_fixes: México normalizado; fraud_score imputado en %d filas", n)
+
+
 def checks(engine):
     with engine.connect() as c:
         q = lambda s: c.exec_driver_sql(s).scalar()
@@ -108,9 +128,11 @@ def checks(engine):
                 f"WHERE amount_usd_source IS NOT NULL AND currency <> 'USD'")
         n_c, n_cs = q(f"SELECT count(*) FROM {SILVER}.customers"), q(f"SELECT count(*) FROM {GOLD}.gold_customer_360")
         rep = q(f"SELECT count(*) FROM {GOLD}.gold_customer_360 WHERE is_repeat_complainer")
+        nn = q(f"SELECT count(*) FROM {GOLD}.fact_transactions_usd WHERE fraud_score IS NULL OR transaction_country = 'Mexico'")
     log.info("fact: silver=%d gold=%d | sin amount_usd=%d | con tasa de respaldo=%d | desvío máx vs amount_usd fuente=%.3f",
              n_s, n_f, no_fx, fb, dev or 0)
     log.info("customer_360: silver=%d gold=%d | is_repeat_complainer=%d", n_c, n_cs, rep)
+    assert nn == 0, "quedan fraud_score nulos o 'Mexico' sin normalizar"
     assert n_s == n_f and n_c == n_cs and no_fx == 0, "falló verificación de gold"
 
 
@@ -143,6 +165,7 @@ def main():
         n = c.exec_driver_sql(f"SELECT count(*) FROM {GOLD}.{name}").scalar()
         c.close()
         log.info("[%s] %d filas (%.1fs)", name, n, time.time() - t0)
+    post_fixes(engine)
     checks(engine)
     return 0
 

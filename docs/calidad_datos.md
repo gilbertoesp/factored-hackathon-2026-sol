@@ -12,7 +12,8 @@ Las pruebas viven en `data_pipeline/tests/test_quality.py` y se ejecutan con
 | `test_process_date_dentro_de_un_dia` | `abs(process_date - transaction_date::date) <= 1` | OK (0 violaciones) |
 | `test_fechas_en_rango` | `transaction_date` entre 2023-01-01 y ahora | OK |
 | `test_monto_usd_consistente` | `monto_usd` no nulo y > 0; en USD igual a `amount`; desvío de conversión ≤ 3 % | OK |
-| `test_fraud_score_en_rango` | `fraud_score` en [0, 100] y nulos ≤ 30 % | OK |
+| `test_fraud_score_en_rango` | `fraud_score` en [0, 100], sin nulos, imputados < 30 % | OK |
+| `test_pais_mexico_normalizado` | Ninguna columna de país con `Mexico` sin tilde | OK |
 | `test_disputes_rechaza_fraud_score_invalido` | La migración 0002 acepta 100 y rechaza 101 (con rollback) | OK |
 
 Las pruebas de PK de `campaign_sends`, `digital_events` y `satisfaction_surveys` se saltan
@@ -56,14 +57,24 @@ El perfilado no encontró PK duplicadas en ninguna tabla (`profile.out`).
 6. **Casteo seguro.** Los valores no casteables quedan en NULL; no se imputa 0 (para no fabricar
    `fraud_score = 0`).
 
+## Correcciones aplicadas el 2026-10-02
+
+- **País normalizado a `México`.** Había `Mexico` (sin tilde) en `transactions` (40.515 filas),
+  `service_agents.country_of_origin` (600) y `marketing_campaigns.target_country` (28). Se corrigió en silver
+  y gold, y `silver_pipeline.py` lo aplica a toda columna `*country*` en futuras corridas.
+  Se revisaron las 153 columnas de texto de silver y gold por variantes de mayúsculas, tildes y espacios
+  (las de hasta 400 valores distintos, más ciudad y estado): no hay otras inconsistencias de este tipo.
+- **`fraud_score` imputado en gold** (885.157 filas, 20 %, nulo al azar por canal, estado y año).
+  Se usa la mediana de las filas con score según `is_fraud` (no fraude ≈ 15,0; fraude ≈ 48,9) y se marca
+  `fraud_score_imputed = true`. Silver conserva el NULL original. Precaución: la imputación usa `is_fraud`,
+  así que no debe usarse `fraud_score` imputado como variable para predecir fraude; filtrar por
+  `NOT fraud_score_imputed`.
+
 ## Problemas conocidos (no corregidos)
 
-- **`fraud_score` nulo en 885.157 transacciones (20 %).** Los valores presentes están en [0, 99,99].
-  1.755 transacciones con `is_fraud = true` tienen `fraud_score < 50`. Hay que decidir cómo tratar los nulos
-  antes de usar el score en el motor.
-- **País con dos grafías:** `Mexico` y `México` (40.515 y 2.105.794 filas). Normalizar antes de agrupar por país.
+- 1.755 transacciones con `is_fraud = true` tienen `fraud_score < 50`.
 - **FK "soft" de sucursales:** `service_agents.assigned_branch_id` (69 % huérfanos) y
   `customers.registration_branch_id` (100 % huérfanos) solo se reportan, no se ponen en cuarentena.
 - **Emails repetidos:** 150.000 clientes pero solo 91.289 emails distintos (sin resolver).
 - **Silver incompleto:** faltan `campaign_sends`, `digital_events` (15,6 M filas) y `satisfaction_surveys`.
-  El gold no depende de ellas.
+  Ni gold ni las Fases 1 y 2 dependen de ellas.

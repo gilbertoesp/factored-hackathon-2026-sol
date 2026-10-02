@@ -13,7 +13,6 @@ from data_pipeline.silver_pipeline import SPECS
 pytestmark = pytest.mark.skipif(not os.getenv("DATABASE_URL"), reason="Falta DATABASE_URL")
 SILVER, GOLD = os.getenv("SILVER_SCHEMA", "silver"), os.getenv("GOLD_SCHEMA", "gold")
 FX_TOLERANCE = 0.03     # desvío máx. observado vs amount_usd de origen: 2,1 %
-MAX_NULL_FRAUD = 0.30   # fraud_score viene nulo en ~20 % de las transacciones (no se imputa)
 
 
 @pytest.fixture(scope="module")
@@ -74,9 +73,21 @@ def test_monto_usd_consistente(conn):
 def test_fraud_score_en_rango(conn):
     t = f"{GOLD}.fact_transactions_usd"
     out = scalar(conn, f"SELECT count(*) FROM {t} WHERE fraud_score < 0 OR fraud_score > 100")
-    share_null = scalar(conn, f"SELECT avg((fraud_score IS NULL)::int) FROM {t}")
+    nulls = scalar(conn, f"SELECT count(*) FROM {t} WHERE fraud_score IS NULL")
+    imputed = scalar(conn, f"SELECT count(*) FROM {t} WHERE fraud_score_imputed")
     assert out == 0, f"{out} fraud_score fuera de [0,100]"
-    assert share_null <= MAX_NULL_FRAUD, f"{share_null:.1%} de fraud_score nulo"
+    assert nulls == 0, f"{nulls} fraud_score sin imputar"
+    assert 0 < imputed < 0.3 * scalar(conn, f"SELECT count(*) FROM {t}"), "proporción de imputados inesperada"
+
+
+def test_pais_mexico_normalizado(conn):
+    """Una sola grafía ('México') en todas las columnas de país de silver y gold."""
+    cols = [(SILVER, "transactions", "transaction_country"), (GOLD, "fact_transactions_usd", "transaction_country"),
+            (SILVER, "customers", "country"), (SILVER, "branches", "country"),
+            (SILVER, "marketing_campaigns", "target_country"), (SILVER, "service_agents", "country_of_origin")]
+    for schema, table, col in cols:
+        bad = scalar(conn, f"SELECT count(*) FROM {schema}.{table} WHERE {col} = 'Mexico'")
+        assert bad == 0, f"{schema}.{table}.{col}: {bad} filas con 'Mexico' sin tilde"
 
 
 def test_disputes_rechaza_fraud_score_invalido(conn):

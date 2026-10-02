@@ -139,6 +139,8 @@ def q(ident):
 def norm(alias, col):
     """Texto normalizado: trim y ''/null/nan -> NULL."""
     x = f"btrim({alias}.{q(col)})"
+    if "country" in col:  # grafía canónica: 'Mexico' -> 'México'
+        x = f"(CASE WHEN lower(translate({x}, 'éÉ', 'eE')) = 'mexico' THEN 'México' ELSE {x} END)"
     return f"(CASE WHEN {x} = '' OR lower({x}) IN ('null','nan') THEN NULL ELSE {x} END)"
 
 
