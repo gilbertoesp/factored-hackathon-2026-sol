@@ -8,6 +8,8 @@ Variables de entorno:
     ETL_INPUT_DIR     carpeta con los CSV crudos (default: ./tablas_amazon)
     ETL_WINDOW_DAYS   si se define, las tablas de hechos solo cargan las particiones
                       de los últimos N días antes del corte (120 para Supabase alojado)
+    ETL_TEST_CUSTOMERS  archivo con un customer_id por línea; con ventana, esos clientes
+                      conservan su historial completo (casos de prueba de D08)
     ETL_OUTPUT_DIR    si se define, además exporta los datos limpios a Parquet
     DATABASE_URL      conexión completa (Supabase alojado); si no existe se arma con
                       DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME
@@ -16,6 +18,7 @@ Variables de entorno:
 Uso:
     python etl.py                     # carga completa
     python etl.py --window-days 120   # ventana para Supabase alojado
+    ETL_TEST_CUSTOMERS=casos_prueba/clientes_prueba.txt python etl.py --window-days 120
     python etl.py --dry-run           # limpia y cuenta, sin tocar la base
 """
 import argparse
@@ -138,6 +141,17 @@ def listar_archivos(ruta_base, tabla, ventana_dias=None):
     return [f for f in archivos if _fecha_particion(f) >= desde]
 
 
+def leer_clientes_prueba(ruta):
+    with open(ruta, encoding="utf-8") as f:
+        return {linea.strip() for linea in f if linea.strip()}
+
+
+def filtrar_ventana(df, ventana_dias, clientes_prueba):
+    """Filas dentro de la ventana, más todo el historial de los clientes de prueba."""
+    desde = (CORTE - timedelta(days=ventana_dias)).strftime("%Y-%m-%d")
+    return df[(df["process_date"] >= desde) | df["customer_id"].isin(clientes_prueba)]
+
+
 def _fecha_particion(ruta):
     m = re.search(r"year=(\d{4})[\\/]month=(\d{2})[\\/]day=(\d{2})", ruta)
     if not m:
@@ -249,9 +263,10 @@ def exportar_parquet(df, directorio, tabla, parte):
     df.to_parquet(os.path.join(destino, f"part-{parte:04d}.parquet"), index=False)
 
 
-def procesar_tabla(tabla, ruta_base, ventana_dias, conn, esquema, dir_parquet, contexto):
+def procesar_tabla(tabla, ruta_base, ventana_dias, conn, esquema, dir_parquet, contexto, clientes_prueba=None):
     """Lee, limpia y carga una tabla. Devuelve (filas de origen, filas en destino)."""
-    archivos = listar_archivos(ruta_base, tabla, ventana_dias)
+    # con clientes de prueba hay que recorrer todas las particiones para rescatar su historial
+    archivos = listar_archivos(ruta_base, tabla, None if clientes_prueba else ventana_dias)
     cols = columnas_destino(tabla, pd.read_csv(archivos[0], nrows=0).columns)
     es_hecho = "**" in TABLAS[tabla]["origen"]
     filas_origen = 0
@@ -263,6 +278,8 @@ def procesar_tabla(tabla, ruta_base, ventana_dias, conn, esquema, dir_parquet, c
 
     for parte, lote in enumerate(lotes(archivos) if es_hecho else [archivos]):
         crudo = leer_csv(lote)
+        if es_hecho and ventana_dias and clientes_prueba:
+            crudo = filtrar_ventana(crudo, ventana_dias, clientes_prueba)
         filas_origen += len(crudo)
         df = limpiar(crudo, tabla, contexto.get("fecha_registro"), contexto.get("fecha_apertura"))
         if tabla == "customers":
@@ -298,7 +315,13 @@ def main():
     if not re.fullmatch(r"[a-z_][a-z0-9_]*", esquema):
         sys.exit(f"DB_SCHEMA inválido: {esquema!r}")
 
+    clientes_prueba = None
+    if args.window_days and os.getenv("ETL_TEST_CUSTOMERS"):
+        clientes_prueba = leer_clientes_prueba(os.environ["ETL_TEST_CUSTOMERS"])
+
     alcance = f"ventana de {args.window_days} días" if args.window_days else "carga completa"
+    if clientes_prueba:
+        alcance += f" + historial de {len(clientes_prueba)} clientes de prueba"
     print(f"ETL | origen={ruta_base} | {alcance} | destino={'dry-run' if args.dry_run else esquema}")
 
     conn = None
@@ -312,7 +335,8 @@ def main():
         contexto = {}
         # dimensiones primero: transactions necesita las fechas de registro y apertura
         for tabla in TABLAS:
-            procesar_tabla(tabla, ruta_base, args.window_days, conn, esquema, dir_parquet, contexto)
+            procesar_tabla(tabla, ruta_base, args.window_days, conn, esquema, dir_parquet, contexto,
+                           clientes_prueba)
     finally:
         if conn:
             conn.close()

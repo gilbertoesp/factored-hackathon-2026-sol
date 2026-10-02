@@ -108,3 +108,13 @@ def test_ventana_selecciona_solo_particiones_recientes(tmp_path):
     assert len(todos) == 3
     assert len(ventana) == 2  # 17/06 y 17/02 (corte - 120 días); el 16/02 queda fuera
     assert todos == sorted(todos)
+
+
+def test_ventana_conserva_historial_de_clientes_de_prueba():
+    crudo = pd.DataFrame({
+        "customer_id": ["C1", "C2", "C1", "C3"],
+        "process_date": ["2026-06-01", "2026-06-01", "2024-01-01", "2024-01-01"],
+    })
+    df = etl.filtrar_ventana(crudo, 120, {"C1"})
+    # dentro de la ventana entran todos; fuera, solo el cliente de prueba
+    assert df["customer_id"].tolist() == ["C1", "C2", "C1"]
