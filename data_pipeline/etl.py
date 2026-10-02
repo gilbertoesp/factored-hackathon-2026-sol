@@ -2,13 +2,14 @@
 """ETL medallion idempotente: S3 -> bronze -> silver -> gold (PostgreSQL).
 
 Uso:
-  python -m data_pipeline.etl [bronze|silver|gold|all] [--force]
+  python -m data_pipeline.etl [bronze|silver|gold|quality|all] [--force]
 
 Idempotencia (sin --force solo se hace el trabajo que falta):
   bronze  los archivos ya cargados se omiten (bronze._ingestion_log).
   silver  solo se procesan las tablas que aún no existen en el esquema silver.
   gold    solo se construyen las tablas que no existen; siempre corre `checks`.
           Además elimina la columna obsoleta llm_context de gold_customer_360.
+  quality pytest de calidad (PK, fechas, monto_usd, fraud_score); falla el ETL si algo no cumple.
 --force reconstruye silver/gold completos (silver tarda horas; gold, ~1 h).
 
 Entorno: DATABASE_URL (obligatoria). El resto de variables se documentan en cada módulo.
@@ -60,7 +61,12 @@ def run_gold(engine, force):
     return gold_pipeline.main()
 
 
-STAGES = {"bronze": run_bronze, "silver": run_silver, "gold": run_gold}
+def run_quality(engine, force):
+    import pytest
+    return int(pytest.main(["-q", os.path.join(os.path.dirname(__file__), "tests", "test_quality.py")]))
+
+
+STAGES = {"bronze": run_bronze, "silver": run_silver, "gold": run_gold, "quality": run_quality}
 
 
 def main(argv=None):
