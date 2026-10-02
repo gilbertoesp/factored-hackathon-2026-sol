@@ -1,0 +1,8 @@
+# docker compose --profile data run --rm data            # corre el ETL completo
+# docker compose --profile data run --rm data python -m data_pipeline.etl gold
+services:
+  data:
+    profiles: ["data"]
+    build: .
+    env_file: .env          # DATABASE_URL, AWS_* (no versionado)
+    command: ["python", "-m", "data_pipeline.etl", "all"]

@@ -1,0 +1,11 @@
+pandas
+pyarrow
+duckdb
+psycopg[binary]
+pydantic
+pytest
+# usadas por el pipeline actual (SQLAlchemy + COPY vía psycopg2, S3, validaciones)
+sqlalchemy
+psycopg2-binary
+boto3
+great_expectations

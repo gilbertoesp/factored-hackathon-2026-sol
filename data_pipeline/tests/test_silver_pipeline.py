@@ -76,7 +76,7 @@ def main():
     seed()
     T, pid, cid, n_casc = inject()
     env = dict(os.environ, BRONZE_SCHEMA=B, SILVER_SCHEMA=S, TABLES="branches,customers,products,transactions")
-    r = subprocess.run([sys.executable, "silver_pipeline.py"], env=env, capture_output=True, text=True)
+    r = subprocess.run([sys.executable, os.path.join(os.path.dirname(__file__), "..", "silver_pipeline.py")], env=env, capture_output=True, text=True)
     print(r.stdout[-6000:], r.stderr[-2000:])
     fails = []
 
