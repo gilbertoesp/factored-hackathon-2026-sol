@@ -1,0 +1,240 @@
+{"id": "B77-003b03712c", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "Why was I charged an extra fee when paying with my card?"}
+{"id": "B77-003c8a63d5", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "I didn't buy this twice"}
+{"id": "B77-009df23690", "clase": "fuera_de_alcance", "intent_banking77": "card_delivery_estimate", "en": "Whats the delivery time to the United States?"}
+{"id": "B77-00b1e6a78d", "clase": "otro_reclamo", "intent_banking77": "failed_transfer", "en": "I've now been trying to do a really standard transfer 5 times already. What's going on, is your system broken or something?!"}
+{"id": "B77-010b154f16", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "More fees, this time for withdrawing my own cash. Why are you robbing me?"}
+{"id": "B77-015bd9735d", "clase": "otro_reclamo", "intent_banking77": "transfer_not_received_by_recipient", "en": "I am still waiting for a transaction to be completed"}
+{"id": "B77-0220eeaed9", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "Why are fees charged on cash withdrawals? I went to withdraw some money earlier today after shopping. There's a fee that wasn't there before."}
+{"id": "B77-0222709b62", "clase": "fuera_de_alcance", "intent_banking77": "card_delivery_estimate", "en": "Can I have my card delivered on a specific day?"}
+{"id": "B77-0247bd023a", "clase": "otro_reclamo", "intent_banking77": "contactless_not_working", "en": "How do I check my security settings to allow contactless pay?"}
+{"id": "B77-024b0c74f5", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "i think someone is using my card to withdraw money. Someone stole my wallet. What can I do? it is urgent."}
+{"id": "B77-029e00a1c5", "clase": "fuera_de_alcance", "intent_banking77": "change_pin", "en": "How can I change the PIN?  Do I have to go to a real bank?"}
+{"id": "B77-02a7d0025f", "clase": "fuera_de_alcance", "intent_banking77": "age_limit", "en": "I would like an account for my children, how do I go about doing this?"}
+{"id": "B77-0330eb9a1e", "clase": "fuera_de_alcance", "intent_banking77": "exchange_rate", "en": "How are exchange rates calculated?"}
+{"id": "B77-034686e019", "clase": "fuera_de_alcance", "intent_banking77": "card_delivery_estimate", "en": "When are cards delivered?"}
+{"id": "B77-03fe641930", "clase": "otro_reclamo", "intent_banking77": "contactless_not_working", "en": "What can I do if contactless doesn't work?"}
+{"id": "B77-0445f6aecb", "clase": "otro_reclamo", "intent_banking77": "contactless_not_working", "en": "It didnt work when I tried to pay contactless at the bus today. Why?"}
+{"id": "B77-0498b636ee", "clase": "otro_reclamo", "intent_banking77": "virtual_card_not_working", "en": "For some reason, the virtual card won't work for me."}
+{"id": "B77-049c0bfa6d", "clase": "fuera_de_alcance", "intent_banking77": "top_up_limits", "en": "Is there a limit to top-up amounts?"}
+{"id": "B77-04a5072b9a", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "What is the payment in my account that I did not do?"}
+{"id": "B77-04bb9c11fc", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "I was charged a fee for a card payment. Why?"}
+{"id": "B77-04d442a71f", "clase": "otro_reclamo", "intent_banking77": "card_not_working", "en": "I've tried my card a bunch of times and it never worked."}
+{"id": "B77-05009cf268", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "I'm not okay with this fee on my statement."}
+{"id": "B77-0538f9abf3", "clase": "otro_reclamo", "intent_banking77": "card_not_working", "en": "My card isn't working"}
+{"id": "B77-054caae8de", "clase": "fuera_de_alcance", "intent_banking77": "order_physical_card", "en": "Can I request a physical card?"}
+{"id": "B77-0565b21482", "clase": "otro_reclamo", "intent_banking77": "balance_not_updated_after_bank_transfer", "en": "I need to know the time frame that is typical for a transfer from a UK account. I just made a transfer and it doesn't appear. I want to make sure everything is okay."}
+{"id": "B77-06022cb96e", "clase": "otro_reclamo", "intent_banking77": "virtual_card_not_working", "en": "I was at the store earlier and my virtual card didn't work. What's the solution for this problem?"}
+{"id": "B77-060aec57e2", "clase": "fuera_de_alcance", "intent_banking77": "top_up_limits", "en": "Is there a limit for top-ups?"}
+{"id": "B77-066567a495", "clase": "fuera_de_alcance", "intent_banking77": "lost_or_stolen_card", "en": "Some idiot stole my card."}
+{"id": "B77-06ca2f2714", "clase": "otro_reclamo", "intent_banking77": "card_swallowed", "en": "What should I do with my atm that got stuck?"}
+{"id": "B77-06f02a5c59", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "Is there supposed to be a fee for the transfer I made?"}
+{"id": "B77-070a85ab93", "clase": "fuera_de_alcance", "intent_banking77": "order_physical_card", "en": "What do you charge for physical cards?"}
+{"id": "B77-071aeb6200", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "I don't recall making that payment?"}
+{"id": "B77-07338eaa87", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "What is the maximum I can transfer before I incur fees?"}
+{"id": "B77-075594eb08", "clase": "otro_reclamo", "intent_banking77": "contactless_not_working", "en": "I couldn't use my contactless this morning, it wasn't accepted."}
+{"id": "B77-0759210269", "clase": "fuera_de_alcance", "intent_banking77": "top_up_limits", "en": "Do you have any restrictions to my top-up?"}
+{"id": "B77-076edbb6ba", "clase": "otro_reclamo", "intent_banking77": "top_up_failed", "en": "The app denied my topped up."}
+{"id": "B77-07c6cd5fa2", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "Why was I charged extra for transferring money?"}
+{"id": "B77-089c311149", "clase": "fuera_de_alcance", "intent_banking77": "activate_my_card", "en": "I tried activating my bill of fare and it didn't workplace"}
+{"id": "B77-09235426e6", "clase": "otro_reclamo", "intent_banking77": "transfer_not_received_by_recipient", "en": "I completed an in country transfer a few days ago and was sure to check the account information several times since the transaction was completed, but the funds are still not available. What is the problem?"}
+{"id": "B77-09ab9091b6", "clase": "fuera_de_alcance", "intent_banking77": "activate_my_card", "en": "What are the steps to activating a new card?"}
+{"id": "B77-0a3f6dfaf0", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "There is a transaction from my account that I don't recognize can you trace back the information so I can make sure it's something I did or not?"}
+{"id": "B77-0a706466f1", "clase": "fuera_de_alcance", "intent_banking77": "edit_personal_details", "en": "I need to change my name what do I do?"}
+{"id": "B77-0ad5bb6d0e", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "I got 2 transfer fees and I thought transfers were free."}
+{"id": "B77-0ae6d41a30", "clase": "fuera_de_alcance", "intent_banking77": "activate_my_card", "en": "How can I activate my card>"}
+{"id": "B77-0ae82ddeec", "clase": "fuera_de_alcance", "intent_banking77": "top_up_limits", "en": "Are the top-ups limited?"}
+{"id": "B77-0b2c7f32d5", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "In my statement there is a payment that is I do not recognize"}
+{"id": "B77-0b397f1f97", "clase": "fuera_de_alcance", "intent_banking77": "top_up_limits", "en": "Is there a maximum i can top up?"}
+{"id": "B77-0b50ae8e6b", "clase": "otro_reclamo", "intent_banking77": "card_not_working", "en": "How can I resolve a problem where my card won't go through at all?"}
+{"id": "B77-0b6e61349f", "clase": "otro_reclamo", "intent_banking77": "balance_not_updated_after_bank_transfer", "en": "How long until my transfer will be available to me"}
+{"id": "B77-0babeadb24", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "Why do you charge fees on card payments?"}
+{"id": "B77-0bc82fb635", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "I am a new customer, and I happened to look at my app and there is a charge I am not familiar with.  Could you tell me why the extra charge is there?"}
+{"id": "B77-0bfdc2c534", "clase": "otro_reclamo", "intent_banking77": "card_not_working", "en": "My card does not work"}
+{"id": "B77-0c7a1a591d", "clase": "otro_reclamo", "intent_banking77": "top_up_failed", "en": "My top up didn't work."}
+{"id": "B77-0c882ffd38", "clase": "fuera_de_alcance", "intent_banking77": "age_limit", "en": "How old do you have to be to get an account?"}
+{"id": "B77-0c9ab518c1", "clase": "fuera_de_alcance", "intent_banking77": "edit_personal_details", "en": "How can I edit my personal details?"}
+{"id": "B77-0c9b580d4c", "clase": "otro_reclamo", "intent_banking77": "top_up_failed", "en": "I really need money from my card today, but my card is getting declined. Please help!!"}
+{"id": "B77-0ca8386ddb", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "Why was I charged an extra fee when using a card?"}
+{"id": "B77-0ca9b2257b", "clase": "otro_reclamo", "intent_banking77": "contactless_not_working", "en": "How can I make my contactless work for the metro?"}
+{"id": "B77-0d27df6ffa", "clase": "fuera_de_alcance", "intent_banking77": "age_limit", "en": "How old do my children need to be to open an account?"}
+{"id": "B77-0db279a7df", "clase": "fuera_de_alcance", "intent_banking77": "lost_or_stolen_card", "en": "I lost my wallet today with all my credit cards. Will you please block the card and send a replacement?"}
+{"id": "B77-0db99e0cb6", "clase": "otro_reclamo", "intent_banking77": "contactless_not_working", "en": "Are contactless payments enabled on my new card?"}
+{"id": "B77-0dcefe89e8", "clase": "fuera_de_alcance", "intent_banking77": "top_up_limits", "en": "What are the restrictions to top-offs?"}
+{"id": "B77-0df800cace", "clase": "otro_reclamo", "intent_banking77": "card_swallowed", "en": "My card was confiscated by an ATM. How do I get my card back?"}
+{"id": "B77-0dfba1a3dc", "clase": "otro_reclamo", "intent_banking77": "failed_transfer", "en": "Why did my transfer fail?"}
+{"id": "B77-0e4b994abc", "clase": "otro_reclamo", "intent_banking77": "transfer_not_received_by_recipient", "en": "transaction failed?"}
+{"id": "B77-0e6a95b5e0", "clase": "otro_reclamo", "intent_banking77": "virtual_card_not_working", "en": "I cannot get my virtual card to work."}
+{"id": "B77-0ef640bfb9", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "Why is there an extra charge for money that was withdrawn?"}
+{"id": "B77-0f1e44b0d1", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "Why was I charged a fee for a transfer?"}
+{"id": "B77-0f50bb836d", "clase": "fuera_de_alcance", "intent_banking77": "activate_my_card", "en": "I got my new card. How do I activate it?"}
+{"id": "B77-0f519d792f", "clase": "otro_reclamo", "intent_banking77": "top_up_failed", "en": "why isnt top up working"}
+{"id": "B77-0f652d4707", "clase": "otro_reclamo", "intent_banking77": "transfer_not_received_by_recipient", "en": "I transferred some money but the receiver can't pick it up for some reason."}
+{"id": "B77-1002bc540d", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "Why is there an extra 1 pound charge on my card?"}
+{"id": "B77-105710429f", "clase": "fuera_de_alcance", "intent_banking77": "card_delivery_estimate", "en": "I am waiting for my card to arrive."}
+{"id": "B77-106880a243", "clase": "fuera_de_alcance", "intent_banking77": "order_physical_card", "en": "Where can I receive my card?"}
+{"id": "B77-10cc8e8a1b", "clase": "fuera_de_alcance", "intent_banking77": "order_physical_card", "en": "Where can my card be delivered?"}
+{"id": "B77-10de537f8a", "clase": "otro_reclamo", "intent_banking77": "card_swallowed", "en": "I can't pull my card out of the ATM. Help me."}
+{"id": "B77-10e7e4a43b", "clase": "otro_reclamo", "intent_banking77": "card_not_working", "en": "My card broke."}
+{"id": "B77-1161cdc3be", "clase": "fuera_de_alcance", "intent_banking77": "edit_personal_details", "en": "How do I change my address?"}
+{"id": "B77-1188dd32b0", "clase": "otro_reclamo", "intent_banking77": "virtual_card_not_working", "en": "How can I fix a problem where my virtual card is rejected?"}
+{"id": "B77-11e25132b8", "clase": "fuera_de_alcance", "intent_banking77": "card_delivery_estimate", "en": "I need my card now!"}
+{"id": "B77-1232405e54", "clase": "otro_reclamo", "intent_banking77": "balance_not_updated_after_bank_transfer", "en": "I made a transfer and am still waiting."}
+{"id": "B77-1274575f95", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "Transactions on my card look really weird. I've been charged twice for a couple things this week! Please check this and return the double charged ones."}
+{"id": "B77-1288a5dec3", "clase": "fuera_de_alcance", "intent_banking77": "activate_my_card", "en": "I just got my card and want to use it, how do I activate my card?"}
+{"id": "B77-12b02868f5", "clase": "fuera_de_alcance", "intent_banking77": "age_limit", "en": "What age can sign up for services?"}
+{"id": "B77-12c2860e43", "clase": "otro_reclamo", "intent_banking77": "top_up_failed", "en": "My top-up has failed."}
+{"id": "B77-12f553626c", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "Why are there so many fees on my statement?"}
+{"id": "B77-135ebe7595", "clase": "otro_reclamo", "intent_banking77": "top_up_failed", "en": "I topped up but the app did not accept it."}
+{"id": "B77-135fb6f72f", "clase": "fuera_de_alcance", "intent_banking77": "age_limit", "en": "What are the age requirements for opening an account?"}
+{"id": "B77-13825a5b6e", "clase": "otro_reclamo", "intent_banking77": "virtual_card_not_working", "en": "My disposable virtual card is broken."}
+{"id": "B77-13e840372a", "clase": "fuera_de_alcance", "intent_banking77": "lost_or_stolen_card", "en": "My card was taken from me"}
+{"id": "B77-1427905987", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "What is the extra  €1 fee in my statement"}
+{"id": "B77-145da460f3", "clase": "fuera_de_alcance", "intent_banking77": "activate_my_card", "en": "Why can't I activate my card?"}
+{"id": "B77-146ede08a8", "clase": "otro_reclamo", "intent_banking77": "card_swallowed", "en": "I have a problem!  The ATM stole my card!"}
+{"id": "B77-14cca3f537", "clase": "otro_reclamo", "intent_banking77": "failed_transfer", "en": "Why did my transfer not go through?"}
+{"id": "B77-1500706aaf", "clase": "otro_reclamo", "intent_banking77": "balance_not_updated_after_bank_transfer", "en": "Where is my transfer from [country]?"}
+{"id": "B77-15b8da0203", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "My card has been charged two separate times for a single transaction."}
+{"id": "B77-15f153e094", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "Why was I charged multiple times for the same thing?"}
+{"id": "B77-15feca82da", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "There is a Direct Debit that I don't recognize."}
+{"id": "B77-161fffa02b", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "Why does my statement have these extra charges?"}
+{"id": "B77-168c7a5006", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "I am seeing a weird payment showing up that I know I did not make, how can I get it cancelled?"}
+{"id": "B77-169c316de3", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "I've been charged more than once for the same transaction"}
+{"id": "B77-16a6fc939f", "clase": "otro_reclamo", "intent_banking77": "contactless_not_working", "en": "For some reason my contactless has stopped working. I don't know what the problem is. What can I do?"}
+{"id": "B77-16fba50c7f", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "I had to pay in order to do a transfer"}
+{"id": "B77-171123b245", "clase": "otro_reclamo", "intent_banking77": "card_swallowed", "en": "I was at an ATM and it swallowed my card."}
+{"id": "B77-177cdc3975", "clase": "otro_reclamo", "intent_banking77": "virtual_card_not_working", "en": "I need help getting the virtual card to work."}
+{"id": "B77-17d944f55e", "clase": "fuera_de_alcance", "intent_banking77": "terminate_account", "en": "Can you delete my account please?"}
+{"id": "B77-17e0ee3fa7", "clase": "fuera_de_alcance", "intent_banking77": "edit_personal_details", "en": "I need to edit the personal details section of my account"}
+{"id": "B77-18101fd5f4", "clase": "fuera_de_alcance", "intent_banking77": "edit_personal_details", "en": "Where can I change my personal information after I move?"}
+{"id": "B77-1885239b2b", "clase": "otro_reclamo", "intent_banking77": "transfer_not_received_by_recipient", "en": "My friend still hasn't gotten a transaction I made."}
+{"id": "B77-1894119f31", "clase": "otro_reclamo", "intent_banking77": "balance_not_updated_after_bank_transfer", "en": "I didn't get the money I transferred"}
+{"id": "B77-1930101c69", "clase": "fuera_de_alcance", "intent_banking77": "change_pin", "en": "I need a new PIN."}
+{"id": "B77-1962651fbc", "clase": "otro_reclamo", "intent_banking77": "top_up_failed", "en": "So, I tried topping up my card for the today. Unfortunately, it failed. A couple of days back I used it and it works fine. Can you double check and tell me what's going on?"}
+{"id": "B77-199a2b473a", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "There is a fee on my account. Why?"}
+{"id": "B77-1a38c5ce08", "clase": "otro_reclamo", "intent_banking77": "card_not_working", "en": "I tried using my card today and it's not working, can you help me?"}
+{"id": "B77-1a39f759e4", "clase": "fuera_de_alcance", "intent_banking77": "exchange_rate", "en": "Where do you get your exchange rates from?"}
+{"id": "B77-1ab4a6e3fc", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "There is an ATM withdrawl in the app I don't recognize."}
+{"id": "B77-1ad377240b", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "I see what looks like duplicate charges on account."}
+{"id": "B77-1b007cdfa4", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "I have a strange payment in my statement"}
+{"id": "B77-1b3f250bd2", "clase": "fuera_de_alcance", "intent_banking77": "age_limit", "en": "How do I open up an account for my child?"}
+{"id": "B77-1b528f302d", "clase": "fuera_de_alcance", "intent_banking77": "change_pin", "en": "I am travelling for two more weeks but really need to change my PIN asap. What do I do?"}
+{"id": "B77-1bbf2ff8b1", "clase": "otro_reclamo", "intent_banking77": "card_swallowed", "en": "What do I do if an ATM ate my card?"}
+{"id": "B77-1bf2ab54fc", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "I found a charge for a direct debit that was not made by me."}
+{"id": "B77-1c23221caa", "clase": "fuera_de_alcance", "intent_banking77": "edit_personal_details", "en": "I moved.  I need to update my details."}
+{"id": "B77-1cbdcbcea3", "clase": "fuera_de_alcance", "intent_banking77": "order_physical_card", "en": "How do I receive my physical card"}
+{"id": "B77-1d3308c3a5", "clase": "otro_reclamo", "intent_banking77": "balance_not_updated_after_bank_transfer", "en": "I did a transfer to my account but it doesn't show up"}
+{"id": "B77-1d34612cf1", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "Someone has taken my money and I don't know who"}
+{"id": "B77-1d431dd368", "clase": "otro_reclamo", "intent_banking77": "contactless_not_working", "en": "Should i reinstall the payment app?"}
+{"id": "B77-1e00d97f1f", "clase": "fuera_de_alcance", "intent_banking77": "card_delivery_estimate", "en": "I need it delivered on a certain date."}
+{"id": "B77-1e3944797d", "clase": "fuera_de_alcance", "intent_banking77": "terminate_account", "en": "I am sick of this damn company and want to close out my account."}
+{"id": "B77-1e59cfba01", "clase": "otro_reclamo", "intent_banking77": "card_not_working", "en": "I think my card is broken"}
+{"id": "B77-1f1985e0aa", "clase": "otro_reclamo", "intent_banking77": "card_not_working", "en": "Can you please identify the problem with my bank card?"}
+{"id": "B77-1f7d0aba04", "clase": "fuera_de_alcance", "intent_banking77": "change_pin", "en": "Where do I change my PIN?"}
+{"id": "B77-1ff2842a1c", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "I was double charged"}
+{"id": "B77-1ffe44cd53", "clase": "fuera_de_alcance", "intent_banking77": "lost_or_stolen_card", "en": "My card got lost."}
+{"id": "B77-20b0c4d9d0", "clase": "otro_reclamo", "intent_banking77": "card_swallowed", "en": "Is there a way I can get my ATM card back from the machine?"}
+{"id": "B77-20bfba8d3a", "clase": "fuera_de_alcance", "intent_banking77": "change_pin", "en": "I need a new Pin how do I go about that?"}
+{"id": "B77-20cb487e3e", "clase": "otro_reclamo", "intent_banking77": "virtual_card_not_working", "en": "I cannot use my disposable virtual card."}
+{"id": "B77-2112221499", "clase": "otro_reclamo", "intent_banking77": "transfer_not_received_by_recipient", "en": "I sent money.  They haven't received it."}
+{"id": "B77-214af833c2", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "There is a withdrawal that isn't mind in the app."}
+{"id": "B77-21f3263bbe", "clase": "otro_reclamo", "intent_banking77": "transfer_not_received_by_recipient", "en": "How long does it take for a transfer to get to a recipient?"}
+{"id": "B77-225deb899f", "clase": "otro_reclamo", "intent_banking77": "failed_transfer", "en": "I tried to transfer money and it did not work."}
+{"id": "B77-2353c36342", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "Why was my account charged for using an ATM?"}
+{"id": "B77-235632cc84", "clase": "fuera_de_alcance", "intent_banking77": "lost_or_stolen_card", "en": "My card is lost! What can I do?"}
+{"id": "B77-23a8f4185e", "clase": "otro_reclamo", "intent_banking77": "card_swallowed", "en": "I was taking out funds and was unable to regain my card."}
+{"id": "B77-23eccd44b5", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "I noticed an extra $1 charge on my statement, can you tell me why that is?"}
+{"id": "B77-23f162df2f", "clase": "fuera_de_alcance", "intent_banking77": "lost_or_stolen_card", "en": "card is lost, please help"}
+{"id": "B77-2407554a6a", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "I thought cash withdrawals didn't have a fee"}
+{"id": "B77-2490a6c1d7", "clase": "fuera_de_alcance", "intent_banking77": "exchange_rate", "en": "How did you come up with your exchange rates?"}
+{"id": "B77-24d25ebbdd", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "I see a charge on my account that I don't recall making. I feel like my account may have been compromised."}
+{"id": "B77-250f60351f", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "There is a odd withdrawal on my account."}
+{"id": "B77-25b0c2fdb0", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "I was charge a fee for my transfer, why?"}
+{"id": "B77-2649c9658f", "clase": "fuera_de_alcance", "intent_banking77": "change_pin", "en": "Which cash machines will allow me to change my PIN?"}
+{"id": "B77-2697f07b56", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "This Direct Debit payment may not be right."}
+{"id": "B77-26cb768d91", "clase": "fuera_de_alcance", "intent_banking77": "exchange_rate", "en": "How are you determining your exchange rates?"}
+{"id": "B77-2736e8357f", "clase": "otro_reclamo", "intent_banking77": "balance_not_updated_after_bank_transfer", "en": "I transferred some money but it is yet to arrive."}
+{"id": "B77-2739fca4d6", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "I'm concerned about a payment that has recently been made on my card.  I do not recognize the name that the transaction went to, can you help me?"}
+{"id": "B77-273aef0cab", "clase": "fuera_de_alcance", "intent_banking77": "terminate_account", "en": "This company sucks! Can you delete my account?"}
+{"id": "B77-279181aa4f", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "Looks like my card payment was duplicated. I went to pay at the store earlier, got declined once,second time it works. App still stays pending for one of the payments. Can you please remove one of them as it's wrong and clearly was declined?"}
+{"id": "B77-27a435d9f2", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "I made a card payment and a fee is showing up?"}
+{"id": "B77-28296ff67e", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "There is an error, the app says I made an ATM withdrawal and I didn't."}
+{"id": "B77-2835a9960b", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "I have a duplicate payment showing up on the app. How do I stop myself being charged for the thing twice?"}
+{"id": "B77-287d0a57b8", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "I have been charged with a fee for paying with my card."}
+{"id": "B77-2898104223", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "How come you charge for cash withdrawals? I withdrew cash after buying groceries today, and there seems to be a new fee"}
+{"id": "B77-28a0967b7c", "clase": "otro_reclamo", "intent_banking77": "virtual_card_not_working", "en": "Are there restrictions for my disposable card since it does not seem to be working?"}
+{"id": "B77-2a93007004", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "Why am I seeing a transfer fee?"}
+{"id": "B77-2da70bc798", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "I'm unsure of a withdrawl in my statement."}
+{"id": "B77-2db21d1d48", "clase": "fuera_de_alcance", "intent_banking77": "exchange_rate", "en": "why do your exchange rates change"}
+{"id": "B77-2de65f1dcc", "clase": "otro_reclamo", "intent_banking77": "failed_transfer", "en": "My transfer keeps failing and I just want to transfer the money can you please make it work?"}
+{"id": "B77-2ed9cc51b7", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "I thought transfers were free, why was I charged a fee?"}
+{"id": "B77-2f9da578bd", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "Can you please check why I am having this extra fee on my statement."}
+{"id": "B77-30878aa314", "clase": "fuera_de_alcance", "intent_banking77": "exchange_rate", "en": "How much will I get with the exchange rate?"}
+{"id": "B77-31438c4ef8", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "There was an extra charge when I made a transfer."}
+{"id": "B77-31b9da4edd", "clase": "fuera_de_alcance", "intent_banking77": "terminate_account", "en": "I want to delete my account. I'm unhappy with the service you're providing."}
+{"id": "B77-31c30f36bc", "clase": "fuera_de_alcance", "intent_banking77": "terminate_account", "en": "Please delete my account right now!"}
+{"id": "B77-32022a40ef", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "someone stole my money"}
+{"id": "B77-324a569b63", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "Using an ATM caused me to incur an additional fee. Why?"}
+{"id": "B77-32b7c7fe1d", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "I think something may have happened that caused a charge to show up twice."}
+{"id": "B77-34a97092a9", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "I was charged a fee when making this transfer, and I don't think I should have been!"}
+{"id": "B77-352b982629", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "I checked the app and saw an extra cash withdrawal that I didn't authorize"}
+{"id": "B77-356adf48d4", "clase": "fuera_de_alcance", "intent_banking77": "terminate_account", "en": "Please delete my account, this company is not working for me!"}
+{"id": "B77-3596461e46", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "I think I see a withdraw I did not make."}
+{"id": "B77-35c5bd1e11", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "I need to cancel my card that got stolen a little while ago. Someone has already taken some money out and I don't want them to take anymore. Can you please do that?"}
+{"id": "B77-36b11ff3fe", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "Why is there more then one charge on my card I only paid for one not twice how can I fix this?"}
+{"id": "B77-371f281fff", "clase": "cobro_indebido", "intent_banking77": "transfer_fee_charged", "en": "Why were there additional charges when transferring?"}
+{"id": "B77-376bae1672", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "There's a debit on my account that I didn't do."}
+{"id": "B77-37fa21106d", "clase": "fuera_de_alcance", "intent_banking77": "order_physical_card", "en": "How much does it cost in fees to use your card?"}
+{"id": "B77-38da0f7c5d", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "For the first time I got a fee on my account. How do I know when you charge these fees?"}
+{"id": "B77-38e59a426c", "clase": "otro_reclamo", "intent_banking77": "failed_transfer", "en": "My transfer did not go through."}
+{"id": "B77-392485175d", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "It's been two weeks, why has the transaction for $1.00 not been reversed?"}
+{"id": "B77-3a13bc60b3", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "Why is there a direct debit I didn't make showing in the app?"}
+{"id": "B77-3af4a74abc", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "I'm quite confused as to what is going on. There is some odd extra pound charge on my statement in the app that's just listed as pending and doesn't go away since a couple days."}
+{"id": "B77-3b2bf406db", "clase": "cobro_indebido", "intent_banking77": "transaction_charged_twice", "en": "I made a payment that got charged twice instead of once."}
+{"id": "B77-3b94a90eab", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "I'm not familiar with a card payment."}
+{"id": "B77-3e33a9c115", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "Even though it's late, I wanted to see about disputing a charge. I was just looking through my transactions over the past couple of months and noticed a pretty large amount that was not completed by me. Is this possibly something I can still do."}
+{"id": "B77-3f01d01918", "clase": "otro_reclamo", "intent_banking77": "failed_transfer", "en": "dont understand why transfer failed"}
+{"id": "B77-41c12a10d2", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "I have a payment I didn't do"}
+{"id": "B77-449544b12f", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "I have a strange direct debit in my statement"}
+{"id": "B77-44a68d3576", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "I got a extra €1 fee in my statement"}
+{"id": "B77-450e782035", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "I don't recognise a cash withdrawal"}
+{"id": "B77-4625282743", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "I thought cash withdrawals were free? Why have I been charged a fee? Also, how much is this fee?"}
+{"id": "B77-465ce1b184", "clase": "cobro_indebido", "intent_banking77": "extra_charge_on_statement", "en": "What is the purpose of the extra fee that is showing up on my statement?"}
+{"id": "B77-4680063ef6", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "There is a direct debit I do not recognise in my statement"}
+{"id": "B77-471f09f924", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "I have a direct debit charge that I do not recognize"}
+{"id": "B77-484fc4d21c", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "Why is there a charge on my account for taking out cash?"}
+{"id": "B77-4cfc0c9daa", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "why does the app show a direct debit payment that I did not authorize"}
+{"id": "B77-4fb73639aa", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "Was charged an ATM fee despite it being a small withdrawal on the 1st day of the month. I thought I was allowed 200 per month?"}
+{"id": "B77-5323bc54b5", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "I don't recognise a card payment"}
+{"id": "B77-543e7ef22a", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "What is this direct debit I am seeing?"}
+{"id": "B77-54c9cc66e6", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "I was charged on my account that shouldn't be there."}
+{"id": "B77-54e12e2079", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "I just lost my wallet and I see that they are already withdrawing money from my account. How can I stop this?"}
+{"id": "B77-54e6c79dc8", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "Is there a limit on how much I can withdraw from my account without being charged?"}
+{"id": "B77-5525bf6d7b", "clase": "cobro_indebido", "intent_banking77": "cash_withdrawal_charge", "en": "I was charged extra for a withdrawal"}
+{"id": "B77-57431e9e9c", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "Unknown direct deposit"}
+{"id": "B77-57f20aa4ef", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "What fees apply when using a card?"}
+{"id": "B77-591f373930", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "I paid with card and I think there was a fee applied."}
+{"id": "B77-5d500d7649", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "I didn't take out money from an ATM but my app statement shows that I did. How can I fix this?"}
+{"id": "B77-6154608d40", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "What do I do if I notice a strange withdrawl in my statement?"}
+{"id": "B77-6170ca25cc", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "I don't think I made this charge on my debit statement."}
+{"id": "B77-61cfbe175e", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "Can anyone help me, I lost my wallet and they've started withdrawing from my account."}
+{"id": "B77-638f6f2163", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "My app shows some cash I didn't get."}
+{"id": "B77-6393a4b13f", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "Payment i did not do"}
+{"id": "B77-652c50d9b2", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "There is a suspicious direct debit payment."}
+{"id": "B77-6bd5e228af", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "My account has a weird withdrawal."}
+{"id": "B77-6befa0f8bf", "clase": "cargo_no_reconocido", "intent_banking77": "direct_debit_payment_not_recognised", "en": "There is a direct debit that's not mine."}
+{"id": "B77-6c8b8e5375", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "I see a cash withdrawal that I did not perform."}
+{"id": "B77-6e64ad782c", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "Will I always be charged a fee for using my card?"}
+{"id": "B77-6efae74aca", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "Some of my card payments look different than where I purchased products from. Why is that?"}
+{"id": "B77-6f0ccdf86a", "clase": "cobro_indebido", "intent_banking77": "card_payment_fee_charged", "en": "I show another charge on my card from when I used it, why?"}
+{"id": "B77-7160faf9ec", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "I don't know where this transaction came from?"}
+{"id": "B77-7a85c093ab", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "Somebody used my card to make a purchase"}
+{"id": "B77-7c9c840e4e", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "I didn't get cash from an ATM, but according to the app a transaction was made when i didn't make it."}
+{"id": "B77-7ce44cc7ba", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "There is a payment that is not mine."}
+{"id": "B77-7d06556bd4", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "I saw a payment i did not do"}
+{"id": "B77-81a1cfd3fc", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "there is a transaction on my account that i didnt make"}
+{"id": "B77-82e3503ab2", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "There is an unauthorized cash withdrawal from my account for 500£.  I definitely didn't make this withdrawal.  I need your help."}
+{"id": "B77-8a8a3b3781", "clase": "cargo_no_reconocido", "intent_banking77": "cash_withdrawal_not_recognised", "en": "I have a strange cash withdrawal in my statement"}
+{"id": "B77-8b80182f6d", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "I did not make this card payment."}
+{"id": "B77-8f5fe019db", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "Please put a freeze on my card,  I am worried there has been some payments on it and I don't know what for."}
+{"id": "B77-95cb67817e", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "An unauthorized payment is in my app"}
+{"id": "B77-a2427b1b8c", "clase": "cargo_no_reconocido", "intent_banking77": "card_payment_not_recognised", "en": "There is a fraudulent charge on my statement."}

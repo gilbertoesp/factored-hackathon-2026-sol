@@ -1,0 +1,197 @@
+{
+  "modelo": "baseline_keywords",
+  "set": "sets/banking77_prueba.jsonl",
+  "ejemplos": 240,
+  "traducciones_revisadas": 0,
+  "resultados": {
+    "es": {
+      "n": 240,
+      "accuracy": 0.571,
+      "f1_macro": 0.697,
+      "abstencion": 0.383,
+      "accuracy_respondidas": 0.926,
+      "por_clase": {
+        "cargo_no_reconocido": {
+          "precision": 0.973,
+          "recall": 0.6,
+          "f1": 0.742,
+          "n": 60
+        },
+        "cobro_indebido": {
+          "precision": 0.98,
+          "recall": 0.8,
+          "f1": 0.881,
+          "n": 60
+        },
+        "otro_reclamo": {
+          "precision": 0.931,
+          "recall": 0.45,
+          "f1": 0.607,
+          "n": 60
+        },
+        "fuera_de_alcance": {
+          "precision": 0.788,
+          "recall": 0.433,
+          "f1": 0.559,
+          "n": 60
+        }
+      },
+      "confusion": {
+        "cargo_no_reconocido": {
+          "cargo_no_reconocido": 36,
+          "cobro_indebido": 0,
+          "otro_reclamo": 0,
+          "fuera_de_alcance": 4,
+          "ambigua": 20
+        },
+        "cobro_indebido": {
+          "cargo_no_reconocido": 1,
+          "cobro_indebido": 48,
+          "otro_reclamo": 1,
+          "fuera_de_alcance": 2,
+          "ambigua": 8
+        },
+        "otro_reclamo": {
+          "cargo_no_reconocido": 0,
+          "cobro_indebido": 0,
+          "otro_reclamo": 27,
+          "fuera_de_alcance": 1,
+          "ambigua": 32
+        },
+        "fuera_de_alcance": {
+          "cargo_no_reconocido": 0,
+          "cobro_indebido": 1,
+          "otro_reclamo": 1,
+          "fuera_de_alcance": 26,
+          "ambigua": 32
+        }
+      }
+    },
+    "pt": {
+      "n": 240,
+      "accuracy": 0.575,
+      "f1_macro": 0.687,
+      "abstencion": 0.354,
+      "accuracy_respondidas": 0.89,
+      "por_clase": {
+        "cargo_no_reconocido": {
+          "precision": 0.973,
+          "recall": 0.6,
+          "f1": 0.742,
+          "n": 60
+        },
+        "cobro_indebido": {
+          "precision": 0.877,
+          "recall": 0.833,
+          "f1": 0.855,
+          "n": 60
+        },
+        "otro_reclamo": {
+          "precision": 0.964,
+          "recall": 0.45,
+          "f1": 0.614,
+          "n": 60
+        },
+        "fuera_de_alcance": {
+          "precision": 0.758,
+          "recall": 0.417,
+          "f1": 0.538,
+          "n": 60
+        }
+      },
+      "confusion": {
+        "cargo_no_reconocido": {
+          "cargo_no_reconocido": 36,
+          "cobro_indebido": 0,
+          "otro_reclamo": 0,
+          "fuera_de_alcance": 4,
+          "ambigua": 20
+        },
+        "cobro_indebido": {
+          "cargo_no_reconocido": 1,
+          "cobro_indebido": 50,
+          "otro_reclamo": 0,
+          "fuera_de_alcance": 1,
+          "ambigua": 8
+        },
+        "otro_reclamo": {
+          "cargo_no_reconocido": 0,
+          "cobro_indebido": 1,
+          "otro_reclamo": 27,
+          "fuera_de_alcance": 3,
+          "ambigua": 29
+        },
+        "fuera_de_alcance": {
+          "cargo_no_reconocido": 0,
+          "cobro_indebido": 6,
+          "otro_reclamo": 1,
+          "fuera_de_alcance": 25,
+          "ambigua": 28
+        }
+      }
+    },
+    "en": {
+      "n": 240,
+      "accuracy": 0.6,
+      "f1_macro": 0.707,
+      "abstencion": 0.329,
+      "accuracy_respondidas": 0.894,
+      "por_clase": {
+        "cargo_no_reconocido": {
+          "precision": 1.0,
+          "recall": 0.45,
+          "f1": 0.621,
+          "n": 60
+        },
+        "cobro_indebido": {
+          "precision": 0.944,
+          "recall": 0.85,
+          "f1": 0.895,
+          "n": 60
+        },
+        "otro_reclamo": {
+          "precision": 0.875,
+          "recall": 0.467,
+          "f1": 0.609,
+          "n": 60
+        },
+        "fuera_de_alcance": {
+          "precision": 0.792,
+          "recall": 0.633,
+          "f1": 0.704,
+          "n": 60
+        }
+      },
+      "confusion": {
+        "cargo_no_reconocido": {
+          "cargo_no_reconocido": 27,
+          "cobro_indebido": 1,
+          "otro_reclamo": 1,
+          "fuera_de_alcance": 5,
+          "ambigua": 26
+        },
+        "cobro_indebido": {
+          "cargo_no_reconocido": 0,
+          "cobro_indebido": 51,
+          "otro_reclamo": 0,
+          "fuera_de_alcance": 1,
+          "ambigua": 8
+        },
+        "otro_reclamo": {
+          "cargo_no_reconocido": 0,
+          "cobro_indebido": 1,
+          "otro_reclamo": 28,
+          "fuera_de_alcance": 4,
+          "ambigua": 27
+        },
+        "fuera_de_alcance": {
+          "cargo_no_reconocido": 0,
+          "cobro_indebido": 1,
+          "otro_reclamo": 3,
+          "fuera_de_alcance": 38,
+          "ambigua": 18
+        }
+      }
+    }
+  }
+}
