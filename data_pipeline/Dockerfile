@@ -16,4 +16,4 @@ COPY . .
 
 # 6. Instrucción final: corre el ETL y termina (los datos crudos se montan en /data)
 ENV ETL_INPUT_DIR=/data
-CMD ["python", "etl.py"]
+CMD ["python", "etl_bank.py"]

@@ -40,9 +40,9 @@ The policy lives in `docs/matriz_decision_es.xlsx`. `backend/scripts/export_rule
 | Conversation API | | planned |
 | Web chat | `frontend/app/chat.tsx` | implemented, tested against a stub of the contract |
 | WhatsApp seams | `backend/src/api/whatsapp/` | tested |
-| Data pipeline (ETL) | | planned |
-| Intent classifier service `ml/` | | planned |
-| Evaluation harness | | planned |
+| Data pipeline (ETL) | `data_pipeline/etl.py` (medallion, see `docs/README_data_ml.md`), `data_pipeline/etl_bank.py` (schema `bank`) | implemented, two versions to reconcile (`docs/integration.md`) |
+| Intent classifier service | `ml/` (keyword baseline + Banking77 set), `motor/contrato.py` (/classify contract) | baseline only; service planned |
+| Evaluation harness | `eval/` (D08 against the engine, D07 proxy, M09 by language) | partial; see `docs/fase3.md` |
 
 ## Quick start
 

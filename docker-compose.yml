@@ -309,6 +309,27 @@ services:
     restart: "no"
 
 
+  # =========================================================================
+  # 7. Pipeline medallion (bronze -> silver -> gold sobre DATABASE_URL)
+  #    docker compose --profile medallion run --rm medallion
+  #    docker compose --profile medallion run --rm medallion python -m data_pipeline.etl gold
+  #    Perfil propio: "data" es el ETL del esquema bank (data-processor), otra cosa.
+  # =========================================================================
+  medallion:
+    profiles: ["medallion"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: medallion_pipeline
+    environment:
+      - DATABASE_URL=${DATABASE_URL:?set DATABASE_URL in .env}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+    command: ["python", "-m", "data_pipeline.etl", "all"]
+    networks:
+      - ai_app_network
+    restart: "no"
+
 networks:
   ai_app_network:
     driver: bridge

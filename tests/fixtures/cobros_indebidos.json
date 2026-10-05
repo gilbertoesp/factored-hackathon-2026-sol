@@ -1,0 +1,1620 @@
+[
+ {
+  "name": "comision_ajuste_0",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00001",
+   "customer_id": "CLI-S0",
+   "transaction_date": "2026-05-06T11:00:00",
+   "transaction_type": "Adjustment",
+   "transaction_status": "Approved",
+   "merchant_name": null,
+   "amount": 153.24,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00011",
+    "customer_id": "CLI-S0",
+    "transaction_date": "2026-05-23T06:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 265.82,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00012",
+    "customer_id": "CLI-S0",
+    "transaction_date": "2026-05-25T03:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 236.1,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00013",
+    "customer_id": "CLI-S0",
+    "transaction_date": "2026-05-24T18:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 226.55,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_ajuste_1",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00002",
+   "customer_id": "CLI-S1",
+   "transaction_date": "2026-05-26T10:00:00",
+   "transaction_type": "Adjustment",
+   "transaction_status": "Approved",
+   "merchant_name": null,
+   "amount": 75.78,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00021",
+    "customer_id": "CLI-S1",
+    "transaction_date": "2026-05-04T20:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 89.74,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00022",
+    "customer_id": "CLI-S1",
+    "transaction_date": "2026-05-05T14:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 8.39,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00023",
+    "customer_id": "CLI-S1",
+    "transaction_date": "2026-05-22T08:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 67.02,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_ajuste_2",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00003",
+   "customer_id": "CLI-S2",
+   "transaction_date": "2026-05-12T03:00:00",
+   "transaction_type": "Adjustment",
+   "transaction_status": "Approved",
+   "merchant_name": null,
+   "amount": 294.07,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00031",
+    "customer_id": "CLI-S2",
+    "transaction_date": "2026-05-16T15:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 299.9,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00032",
+    "customer_id": "CLI-S2",
+    "transaction_date": "2026-05-23T07:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 218.32,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00033",
+    "customer_id": "CLI-S2",
+    "transaction_date": "2026-05-05T05:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 89.84,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_ajuste_3",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00004",
+   "customer_id": "CLI-S3",
+   "transaction_date": "2026-05-07T10:00:00",
+   "transaction_type": "Adjustment",
+   "transaction_status": "Approved",
+   "merchant_name": null,
+   "amount": 12.3,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00041",
+    "customer_id": "CLI-S3",
+    "transaction_date": "2026-05-17T03:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 141.02,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00042",
+    "customer_id": "CLI-S3",
+    "transaction_date": "2026-05-05T06:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 267.84,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00043",
+    "customer_id": "CLI-S3",
+    "transaction_date": "2026-05-25T01:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 260.83,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_ajuste_4",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00005",
+   "customer_id": "CLI-S4",
+   "transaction_date": "2026-05-19T13:00:00",
+   "transaction_type": "Adjustment",
+   "transaction_status": "Approved",
+   "merchant_name": null,
+   "amount": 122.45,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00051",
+    "customer_id": "CLI-S4",
+    "transaction_date": "2026-05-23T19:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 254.12,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00052",
+    "customer_id": "CLI-S4",
+    "transaction_date": "2026-05-25T11:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 156.32,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00053",
+    "customer_id": "CLI-S4",
+    "transaction_date": "2026-05-02T11:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 230.92,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_ajuste_5",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00006",
+   "customer_id": "CLI-S5",
+   "transaction_date": "2026-05-03T12:00:00",
+   "transaction_type": "Adjustment",
+   "transaction_status": "Approved",
+   "merchant_name": null,
+   "amount": 216.61,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00061",
+    "customer_id": "CLI-S5",
+    "transaction_date": "2026-05-19T17:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 47.01,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00062",
+    "customer_id": "CLI-S5",
+    "transaction_date": "2026-05-11T04:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 189.87,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00063",
+    "customer_id": "CLI-S5",
+    "transaction_date": "2026-05-20T21:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 215.78,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_ajuste_6",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00007",
+   "customer_id": "CLI-S6",
+   "transaction_date": "2026-05-24T16:00:00",
+   "transaction_type": "Adjustment",
+   "transaction_status": "Approved",
+   "merchant_name": null,
+   "amount": 170.14,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00071",
+    "customer_id": "CLI-S6",
+    "transaction_date": "2026-05-14T13:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 242.44,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00072",
+    "customer_id": "CLI-S6",
+    "transaction_date": "2026-05-18T13:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 64.75,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00073",
+    "customer_id": "CLI-S6",
+    "transaction_date": "2026-05-12T21:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 14.77,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_ajuste_7",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00008",
+   "customer_id": "CLI-S7",
+   "transaction_date": "2026-05-20T23:00:00",
+   "transaction_type": "Adjustment",
+   "transaction_status": "Approved",
+   "merchant_name": null,
+   "amount": 111.18,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00081",
+    "customer_id": "CLI-S7",
+    "transaction_date": "2026-05-09T22:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 209.33,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00082",
+    "customer_id": "CLI-S7",
+    "transaction_date": "2026-05-21T07:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 243.35,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00083",
+    "customer_id": "CLI-S7",
+    "transaction_date": "2026-05-25T05:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 250.26,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_ajuste_8",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00009",
+   "customer_id": "CLI-S8",
+   "transaction_date": "2026-05-14T22:00:00",
+   "transaction_type": "Adjustment",
+   "transaction_status": "Approved",
+   "merchant_name": null,
+   "amount": 275.46,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00091",
+    "customer_id": "CLI-S8",
+    "transaction_date": "2026-05-05T14:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 208.35,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00092",
+    "customer_id": "CLI-S8",
+    "transaction_date": "2026-05-23T09:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 138.61,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00093",
+    "customer_id": "CLI-S8",
+    "transaction_date": "2026-05-09T05:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 253.52,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_ajuste_9",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00010",
+   "customer_id": "CLI-S9",
+   "transaction_date": "2026-05-21T20:00:00",
+   "transaction_type": "Adjustment",
+   "transaction_status": "Approved",
+   "merchant_name": null,
+   "amount": 196.32,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00101",
+    "customer_id": "CLI-S9",
+    "transaction_date": "2026-05-22T16:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 33.52,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00102",
+    "customer_id": "CLI-S9",
+    "transaction_date": "2026-05-18T23:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 137.57,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00103",
+    "customer_id": "CLI-S9",
+    "transaction_date": "2026-05-02T00:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 5.06,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_comercio_0",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00011",
+   "customer_id": "CLI-F0",
+   "transaction_date": "2026-05-24T17:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Cargo por membresía",
+   "amount": 184.99,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00111",
+    "customer_id": "CLI-F0",
+    "transaction_date": "2026-05-09T21:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 40.64,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_comercio_1",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00012",
+   "customer_id": "CLI-F1",
+   "transaction_date": "2026-05-24T17:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Comisión por mantenimiento",
+   "amount": 202.2,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00121",
+    "customer_id": "CLI-F1",
+    "transaction_date": "2026-05-16T15:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 6.51,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_comercio_2",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00013",
+   "customer_id": "CLI-F2",
+   "transaction_date": "2026-05-26T07:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Cargo por membresía",
+   "amount": 208.48,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00131",
+    "customer_id": "CLI-F2",
+    "transaction_date": "2026-05-07T04:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 144.53,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_comercio_3",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00014",
+   "customer_id": "CLI-F3",
+   "transaction_date": "2026-05-22T22:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Comisión por mantenimiento",
+   "amount": 29.91,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00141",
+    "customer_id": "CLI-F3",
+    "transaction_date": "2026-05-08T05:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 236.11,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "comision_comercio_4",
+  "expected": "comision",
+  "selected": {
+   "transaction_id": "TXN-00015",
+   "customer_id": "CLI-F4",
+   "transaction_date": "2026-05-14T11:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Cargo por membresía",
+   "amount": 120.17,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00151",
+    "customer_id": "CLI-F4",
+    "transaction_date": "2026-05-07T18:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 115.92,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "duplicado_0",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00016",
+   "customer_id": "CLI-D0",
+   "transaction_date": "2026-05-05T22:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Mercado Central",
+   "amount": 266.89,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-D0000",
+    "customer_id": "CLI-D0",
+    "transaction_date": "2026-05-05T22:01:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 266.89,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00161",
+    "customer_id": "CLI-D0",
+    "transaction_date": "2026-05-16T05:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 280.69,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "duplicado_1",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00017",
+   "customer_id": "CLI-D1",
+   "transaction_date": "2026-05-02T12:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Super Ahorro",
+   "amount": 155.56,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-D0001",
+    "customer_id": "CLI-D1",
+    "transaction_date": "2026-05-02T12:06:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 155.56,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00171",
+    "customer_id": "CLI-D1",
+    "transaction_date": "2026-05-14T08:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 101.18,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "duplicado_2",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00018",
+   "customer_id": "CLI-D2",
+   "transaction_date": "2026-05-06T14:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Mercado Central",
+   "amount": 284.89,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-D0002",
+    "customer_id": "CLI-D2",
+    "transaction_date": "2026-05-06T14:10:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 284.89,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00181",
+    "customer_id": "CLI-D2",
+    "transaction_date": "2026-05-08T16:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 179.42,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "duplicado_3",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00019",
+   "customer_id": "CLI-D3",
+   "transaction_date": "2026-05-10T05:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Mercado Central",
+   "amount": 188.89,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-D0003",
+    "customer_id": "CLI-D3",
+    "transaction_date": "2026-05-10T05:08:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 188.89,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00191",
+    "customer_id": "CLI-D3",
+    "transaction_date": "2026-05-11T08:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 166.47,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "duplicado_4",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00020",
+   "customer_id": "CLI-D4",
+   "transaction_date": "2026-05-02T20:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Restaurante El Buen Sabor",
+   "amount": 195.93,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-D0004",
+    "customer_id": "CLI-D4",
+    "transaction_date": "2026-05-02T20:03:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 195.93,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00201",
+    "customer_id": "CLI-D4",
+    "transaction_date": "2026-05-03T08:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 138.29,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "duplicado_5",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00021",
+   "customer_id": "CLI-D5",
+   "transaction_date": "2026-05-09T11:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Mercado Central",
+   "amount": 214.73,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-D0005",
+    "customer_id": "CLI-D5",
+    "transaction_date": "2026-05-09T11:01:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 214.73,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00211",
+    "customer_id": "CLI-D5",
+    "transaction_date": "2026-05-06T22:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 236.7,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "duplicado_6",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00022",
+   "customer_id": "CLI-D6",
+   "transaction_date": "2026-05-23T11:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Restaurante El Buen Sabor",
+   "amount": 52.32,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-D0006",
+    "customer_id": "CLI-D6",
+    "transaction_date": "2026-05-23T11:03:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 52.32,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00221",
+    "customer_id": "CLI-D6",
+    "transaction_date": "2026-05-18T01:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 130.48,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "duplicado_7",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00023",
+   "customer_id": "CLI-D7",
+   "transaction_date": "2026-05-19T02:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Super Ahorro",
+   "amount": 118.04,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-D0007",
+    "customer_id": "CLI-D7",
+    "transaction_date": "2026-05-19T02:03:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 118.04,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00231",
+    "customer_id": "CLI-D7",
+    "transaction_date": "2026-05-16T02:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 82.72,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "duplicado_8",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00024",
+   "customer_id": "CLI-D8",
+   "transaction_date": "2026-05-22T15:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Mercado Central",
+   "amount": 89.86,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-D0008",
+    "customer_id": "CLI-D8",
+    "transaction_date": "2026-05-22T15:03:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 89.86,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00241",
+    "customer_id": "CLI-D8",
+    "transaction_date": "2026-05-15T07:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 136.15,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "duplicado_9",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00025",
+   "customer_id": "CLI-D9",
+   "transaction_date": "2026-05-23T21:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Tienda Don José",
+   "amount": 245.76,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-D0009",
+    "customer_id": "CLI-D9",
+    "transaction_date": "2026-05-23T21:04:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 245.76,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00251",
+    "customer_id": "CLI-D9",
+    "transaction_date": "2026-05-11T06:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 286.33,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "borde_10min",
+  "expected": "duplicado",
+  "selected": {
+   "transaction_id": "TXN-00026",
+   "customer_id": "CLI-B0",
+   "transaction_date": "2026-05-20T19:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Tienda Don José",
+   "amount": 125.36,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-B0000",
+    "customer_id": "CLI-B0",
+    "transaction_date": "2026-05-20T19:10:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 125.36,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "borde_11min",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00027",
+   "customer_id": "CLI-B1",
+   "transaction_date": "2026-05-09T04:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Super Ahorro",
+   "amount": 108.83,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-B0001",
+    "customer_id": "CLI-B1",
+    "transaction_date": "2026-05-09T04:11:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 108.83,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "borde_600min",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00028",
+   "customer_id": "CLI-B2",
+   "transaction_date": "2026-05-08T02:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Tienda Don José",
+   "amount": 170.79,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-B0002",
+    "customer_id": "CLI-B2",
+    "transaction_date": "2026-05-08T12:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 170.79,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "no_duplicado_0",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00029",
+   "customer_id": "CLI-N0",
+   "transaction_date": "2026-05-25T20:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Restaurante El Buen Sabor",
+   "amount": 37.36,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-N0000",
+    "customer_id": "CLI-N0",
+    "transaction_date": "2026-05-25T20:05:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Reversed",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 37.36,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "no_duplicado_1",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00030",
+   "customer_id": "CLI-N1",
+   "transaction_date": "2026-05-13T09:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Restaurante El Buen Sabor",
+   "amount": 173.1,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-N0001",
+    "customer_id": "CLI-N1",
+    "transaction_date": "2026-05-16T09:05:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 173.1,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "no_duplicado_2",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00031",
+   "customer_id": "CLI-N2",
+   "transaction_date": "2026-05-25T10:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Tienda Don José",
+   "amount": 202.74,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-N0002",
+    "customer_id": "CLI-N2",
+    "transaction_date": "2026-05-25T10:05:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Reversed",
+    "merchant_name": "Tienda Don José",
+    "amount": 202.74,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "no_duplicado_3",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00032",
+   "customer_id": "CLI-N3",
+   "transaction_date": "2026-05-07T01:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Super Ahorro",
+   "amount": 235.55,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-N0003",
+    "customer_id": "CLI-N3",
+    "transaction_date": "2026-05-10T01:05:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 235.55,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "no_duplicado_4",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00033",
+   "customer_id": "CLI-N4",
+   "transaction_date": "2026-05-05T12:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Mercado Central",
+   "amount": 55.53,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-N0004",
+    "customer_id": "CLI-N4",
+    "transaction_date": "2026-05-05T12:05:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Reversed",
+    "merchant_name": "Mercado Central",
+    "amount": 55.53,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "compra_0",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00034",
+   "customer_id": "CLI-C0",
+   "transaction_date": "2026-05-03T23:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Tienda Don José",
+   "amount": 218.1,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00341",
+    "customer_id": "CLI-C0",
+    "transaction_date": "2026-05-09T07:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 154.45,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00342",
+    "customer_id": "CLI-C0",
+    "transaction_date": "2026-05-13T05:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 90.86,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00343",
+    "customer_id": "CLI-C0",
+    "transaction_date": "2026-05-14T20:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 81.95,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "compra_1",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00035",
+   "customer_id": "CLI-C1",
+   "transaction_date": "2026-05-04T02:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Super Ahorro",
+   "amount": 126.43,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00351",
+    "customer_id": "CLI-C1",
+    "transaction_date": "2026-05-12T09:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 289.8,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00352",
+    "customer_id": "CLI-C1",
+    "transaction_date": "2026-05-03T20:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 74.39,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00353",
+    "customer_id": "CLI-C1",
+    "transaction_date": "2026-05-14T15:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 32.69,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "compra_2",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00036",
+   "customer_id": "CLI-C2",
+   "transaction_date": "2026-05-25T08:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Tienda Don José",
+   "amount": 97.92,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00361",
+    "customer_id": "CLI-C2",
+    "transaction_date": "2026-05-20T20:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 277.8,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00362",
+    "customer_id": "CLI-C2",
+    "transaction_date": "2026-05-14T21:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 180.25,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00363",
+    "customer_id": "CLI-C2",
+    "transaction_date": "2026-05-19T14:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 207.51,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "compra_3",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00037",
+   "customer_id": "CLI-C3",
+   "transaction_date": "2026-05-22T19:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Tienda Don José",
+   "amount": 119.77,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00371",
+    "customer_id": "CLI-C3",
+    "transaction_date": "2026-05-16T14:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 221.94,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00372",
+    "customer_id": "CLI-C3",
+    "transaction_date": "2026-05-20T01:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 88.02,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00373",
+    "customer_id": "CLI-C3",
+    "transaction_date": "2026-05-15T12:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 219.5,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "compra_4",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00038",
+   "customer_id": "CLI-C4",
+   "transaction_date": "2026-05-06T15:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Tienda Don José",
+   "amount": 231.53,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00381",
+    "customer_id": "CLI-C4",
+    "transaction_date": "2026-05-15T00:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 164.94,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00382",
+    "customer_id": "CLI-C4",
+    "transaction_date": "2026-05-16T00:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 170.45,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00383",
+    "customer_id": "CLI-C4",
+    "transaction_date": "2026-05-06T05:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 187.6,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "compra_5",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00039",
+   "customer_id": "CLI-C5",
+   "transaction_date": "2026-05-06T11:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Super Ahorro",
+   "amount": 42.08,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00391",
+    "customer_id": "CLI-C5",
+    "transaction_date": "2026-05-16T12:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 13.49,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00392",
+    "customer_id": "CLI-C5",
+    "transaction_date": "2026-05-26T02:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 110.01,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00393",
+    "customer_id": "CLI-C5",
+    "transaction_date": "2026-05-17T19:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 75.6,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "compra_6",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00040",
+   "customer_id": "CLI-C6",
+   "transaction_date": "2026-05-19T09:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Restaurante El Buen Sabor",
+   "amount": 233.6,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00401",
+    "customer_id": "CLI-C6",
+    "transaction_date": "2026-05-09T05:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Super Ahorro",
+    "amount": 200.16,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00402",
+    "customer_id": "CLI-C6",
+    "transaction_date": "2026-05-24T12:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 267.3,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00403",
+    "customer_id": "CLI-C6",
+    "transaction_date": "2026-05-07T17:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 11.89,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "compra_7",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00041",
+   "customer_id": "CLI-C7",
+   "transaction_date": "2026-05-13T05:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Mercado Central",
+   "amount": 128.27,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00411",
+    "customer_id": "CLI-C7",
+    "transaction_date": "2026-05-14T20:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 283.55,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00412",
+    "customer_id": "CLI-C7",
+    "transaction_date": "2026-05-05T05:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 168.13,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00413",
+    "customer_id": "CLI-C7",
+    "transaction_date": "2026-05-23T08:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 105.51,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "compra_8",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00042",
+   "customer_id": "CLI-C8",
+   "transaction_date": "2026-05-23T14:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Tienda Don José",
+   "amount": 21.6,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00421",
+    "customer_id": "CLI-C8",
+    "transaction_date": "2026-05-01T21:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 143.81,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00422",
+    "customer_id": "CLI-C8",
+    "transaction_date": "2026-05-10T21:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Restaurante El Buen Sabor",
+    "amount": 278.53,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00423",
+    "customer_id": "CLI-C8",
+    "transaction_date": "2026-05-18T10:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 285.54,
+    "currency": "USD"
+   }
+  ]
+ },
+ {
+  "name": "compra_9",
+  "expected": "compra",
+  "selected": {
+   "transaction_id": "TXN-00043",
+   "customer_id": "CLI-C9",
+   "transaction_date": "2026-05-11T08:00:00",
+   "transaction_type": "Purchase",
+   "transaction_status": "Approved",
+   "merchant_name": "Tienda Don José",
+   "amount": 106.39,
+   "currency": "USD"
+  },
+  "others": [
+   {
+    "transaction_id": "TXN-00431",
+    "customer_id": "CLI-C9",
+    "transaction_date": "2026-05-09T23:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 110.94,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00432",
+    "customer_id": "CLI-C9",
+    "transaction_date": "2026-05-20T22:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Mercado Central",
+    "amount": 269.62,
+    "currency": "USD"
+   },
+   {
+    "transaction_id": "TXN-00433",
+    "customer_id": "CLI-C9",
+    "transaction_date": "2026-05-26T04:00:00",
+    "transaction_type": "Purchase",
+    "transaction_status": "Approved",
+    "merchant_name": "Tienda Don José",
+    "amount": 60.43,
+    "currency": "USD"
+   }
+  ]
+ }
+]

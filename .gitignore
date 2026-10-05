@@ -16,3 +16,16 @@ Information_hackaton/
 __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
+*.pyc
+*.log
+*.out
+.env.*
+!.env.example
+gold_export/
+*.npz
+
+# motor de reglas y casos D08 descargados por eval/preparar_motor.sh
+.motor/
+silver_report.json
+*.log
+*.out

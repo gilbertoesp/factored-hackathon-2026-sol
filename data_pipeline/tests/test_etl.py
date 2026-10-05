@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import etl  # noqa: E402
+import etl_bank as etl  # noqa: E402
 
 
 def tx_crudas(**cambios):

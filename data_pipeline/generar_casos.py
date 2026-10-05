@@ -1,12 +1,12 @@
 """D08: casos de prueba anclados en transacciones reales para las reglas R09 a R20.
 
-Lee la base cargada por etl.py (carga completa) y elige, de forma determinista,
+Lee la base cargada por etl_bank.py (carga completa) y elige, de forma determinista,
 transacciones reales que cumplen la condición de cada regla de la matriz de
 decisión (docs/matriz_decision_es.xlsx -> backend/src/rules/rules.json).
 
 Salidas (en casos_prueba/):
     casos_r09_r20.json    un caso por fila: cliente, transacción(es), hechos y regla esperada
-    clientes_prueba.txt   customer_id de los casos; etl.py los carga con su historial
+    clientes_prueba.txt   customer_id de los casos; etl_bank.py los carga con su historial
                           completo en Supabase alojado (ETL_TEST_CUSTOMERS)
 
 Qué es real y qué no:
@@ -19,7 +19,7 @@ Qué es real y qué no:
 Los hechos usan la forma de `Facts` de backend/src/rules/engine.ts, para que el
 arnés de evaluación pueda llamar decide(hechos) y comparar con `esperado`.
 
-Uso (misma conexión que etl.py):
+Uso (misma conexión que etl_bank.py):
     DB_PORT=55432 python generar_casos.py
 """
 import json
@@ -31,7 +31,7 @@ from typing import Literal, Optional
 import psycopg
 from pydantic import BaseModel, ConfigDict
 
-from etl import CORTE, url_base_datos
+from etl_bank import CORTE, url_base_datos
 from txn_buscar import Consulta  # entrada de txn.buscar (D10)
 
 FECHA_REFERENCIA = CORTE.date()  # "hoy" para el agente: el dataset termina aquí
@@ -405,7 +405,7 @@ def main():
         "meta": {
             "tarea": "D08",
             "generado_por": "data_pipeline/generar_casos.py",
-            "fuente": "esquema bank cargado por data_pipeline/etl.py (carga completa)",
+            "fuente": "esquema bank cargado por data_pipeline/etl_bank.py (carga completa)",
             "fecha_referencia": FECHA_REFERENCIA.isoformat(),
             "umbrales": {"searchWindowDays": VENTANA_DIAS, "dateToleranceDays": TOLERANCIA_DIAS,
                          "fraudScoreAutoBlock": SCORE_BLOQUEO,

@@ -1,0 +1,32 @@
+{"text": "No reconozco este cargo de $850 en Oxxo, yo no compré nada", "intent": "cargo_no_reconocido", "subtype": null, "language": "es-MX", "source": "sintetico"}
+{"text": "¿Por qué me cobraron una comisión por manejo de cuenta este mes?", "intent": "cobro_indebido", "subtype": "comision", "language": "es-MX", "source": "sintetico"}
+{"text": "Me cobraron dos veces la misma compra en Liverpool", "intent": "cobro_indebido", "subtype": "duplicado", "language": "es-MX", "source": "sintetico"}
+{"text": "Pagué $400 en la tienda pero en mi estado de cuenta salen $900", "intent": "cobro_indebido", "subtype": "compra", "language": "es-MX", "source": "sintetico"}
+{"text": "La app se cierra cuando intento entrar", "intent": "otro_reclamo", "subtype": null, "language": "es-MX", "source": "sintetico"}
+{"text": "Oye, ¿me puedes ayudar con una cosa de mi cuenta?", "intent": "ambigua", "subtype": null, "language": "es-MX", "source": "sintetico"}
+{"text": "Perdí mi cartera, bloqueen mi tarjeta por favor", "intent": "fuera_de_alcance", "subtype": "bloqueo_tarjeta", "language": "es-MX", "source": "sintetico"}
+{"text": "Quiero cambiar el domicilio de mi contrato", "intent": "fuera_de_alcance", "subtype": "otro", "language": "es-MX", "source": "sintetico"}
+{"text": "No reconozco ese cargo de 120.000 pesos, yo no hice esa compra", "intent": "cargo_no_reconocido", "subtype": null, "language": "es-CO", "source": "sintetico"}
+{"text": "Me están cobrando una cuota de manejo que nunca me informaron", "intent": "cobro_indebido", "subtype": "comision", "language": "es-CO", "source": "sintetico"}
+{"text": "Me cobraron dos veces lo mismo en Éxito, parce", "intent": "cobro_indebido", "subtype": "duplicado", "language": "es-CO", "source": "sintetico"}
+{"text": "Compré unos zapatos que nunca llegaron y me los cobraron", "intent": "cobro_indebido", "subtype": "compra", "language": "es-CO", "source": "sintetico"}
+{"text": "En la sucursal del centro me atendieron muy mal", "intent": "otro_reclamo", "subtype": null, "language": "es-CO", "source": "sintetico"}
+{"text": "Buenas, quisiera hacer una consulta", "intent": "ambigua", "subtype": null, "language": "es-CO", "source": "sintetico"}
+{"text": "Me robaron la tarjeta, bloquéenla ya", "intent": "fuera_de_alcance", "subtype": "bloqueo_tarjeta", "language": "es-CO", "source": "sintetico"}
+{"text": "Quiero información sobre créditos de vivienda", "intent": "fuera_de_alcance", "subtype": "otro", "language": "es-CO", "source": "sintetico"}
+{"text": "Che, hay un consumo de $15000 que no reconozco, no fui yo", "intent": "cargo_no_reconocido", "subtype": null, "language": "es-AR", "source": "sintetico"}
+{"text": "¿Qué es este cargo por mantenimiento de cuenta? Nunca me lo cobraban", "intent": "cobro_indebido", "subtype": "comision", "language": "es-AR", "source": "sintetico"}
+{"text": "Me debitaron dos veces la misma compra en Coto", "intent": "cobro_indebido", "subtype": "duplicado", "language": "es-AR", "source": "sintetico"}
+{"text": "Compré una zapatilla por $30000 y me cobraron $45000", "intent": "cobro_indebido", "subtype": "compra", "language": "es-AR", "source": "sintetico"}
+{"text": "El home banking no me deja ver los movimientos", "intent": "otro_reclamo", "subtype": null, "language": "es-AR", "source": "sintetico"}
+{"text": "Hola, necesito ayuda con mi cuenta", "intent": "ambigua", "subtype": null, "language": "es-AR", "source": "sintetico"}
+{"text": "Perdí la tarjeta, bloqueala por favor", "intent": "fuera_de_alcance", "subtype": "bloqueo_tarjeta", "language": "es-AR", "source": "sintetico"}
+{"text": "Quiero saber el horario de las sucursales", "intent": "fuera_de_alcance", "subtype": "otro", "language": "es-AR", "source": "sintetico"}
+{"text": "Não reconheço essa cobrança de R$ 200, eu não comprei isso", "intent": "cargo_no_reconocido", "subtype": null, "language": "pt-BR", "source": "sintetico"}
+{"text": "Estão me cobrando uma tarifa de manutenção que eu não conhecia", "intent": "cobro_indebido", "subtype": "comision", "language": "pt-BR", "source": "sintetico"}
+{"text": "Fui cobrado duas vezes pela mesma compra no mercado", "intent": "cobro_indebido", "subtype": "duplicado", "language": "pt-BR", "source": "sintetico"}
+{"text": "A compra de ontem veio com valor errado", "intent": "cobro_indebido", "subtype": "compra", "language": "pt-BR", "source": "sintetico"}
+{"text": "O aplicativo não abre desde a atualização", "intent": "otro_reclamo", "subtype": null, "language": "pt-BR", "source": "sintetico"}
+{"text": "Olá, preciso de ajuda com minha conta", "intent": "ambigua", "subtype": null, "language": "pt-BR", "source": "sintetico"}
+{"text": "Perdi meu cartão, bloqueiem por favor", "intent": "fuera_de_alcance", "subtype": "bloqueo_tarjeta", "language": "pt-BR", "source": "sintetico"}
+{"text": "Quero abrir uma conta para minha empresa", "intent": "fuera_de_alcance", "subtype": "otro", "language": "pt-BR", "source": "sintetico"}

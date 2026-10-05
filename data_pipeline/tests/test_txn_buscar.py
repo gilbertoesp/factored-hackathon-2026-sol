@@ -117,7 +117,7 @@ RUTA_CASOS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file
 def conn():
     """Base cargada por etl.py; se omite si no hay conexión."""
     psycopg = pytest.importorskip("psycopg")
-    from etl import url_base_datos
+    from etl_bank import url_base_datos
     try:
         c = psycopg.connect(url_base_datos(), connect_timeout=5)
     except psycopg.OperationalError:

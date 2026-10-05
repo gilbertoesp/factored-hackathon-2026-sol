@@ -24,7 +24,7 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from etl import CORTE
+from etl_bank import CORTE
 
 FECHA_REFERENCIA = CORTE.date()  # "hoy" para el agente: el dataset termina aquí
 VENTANA_DIAS = 120       # searchWindowDays
