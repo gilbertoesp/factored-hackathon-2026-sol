@@ -1,0 +1,8 @@
+.venv/
+tablas_amazon/
+datos_limpios_bank_bot/
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/
+*.parquet
+*.csv
