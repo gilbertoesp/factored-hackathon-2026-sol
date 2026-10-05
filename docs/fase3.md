@@ -27,6 +27,13 @@ decisiones de `decide` del motor TS. Las pruebas (`tests/test_contra_motor.py`) 
 - **M09:** `eval/contra_motor.py` pasa la salida del clasificador al primer paso del motor (R05/R07/R08 o pedir
   búsqueda) y mide por idioma. Hoy corre con un clasificador oráculo (verifica el flujo); falta enchufar `/classify`
   o el zero-shot. Con confianza < 0,7 el motor responde R05 aunque el clasificador diga otra cosa (probado).
+- **M09 con clasificador real (`python -m eval.m09_palabras_clave`):** usa la línea base por palabras clave de Manuel
+  (`ml/baseline_keywords.py`, M04) como clasificador y el motor real para el primer paso. Sobre Banking77 (240 consultas
+  x es/pt/en, traducción automática sin revisar) acierta la intención en 59 % (es 60, pt 58, en 60 %) y se abstiene
+  (R05) en ~35 % de los casos; con el idioma forzado reproduce las cifras de Manuel (es 57,1 %, abstención 38,3 %).
+  Sobre los 32 textos sintéticos regionales: 59 % de intención, sin diferencia clara entre variantes (n = 8 por
+  idioma). No produce subtipo ni distingue es-MX/CO/AR, y su "confianza" es fija (0,9 o 0,5). Es un piso de
+  comparación, no el clasificador final: el `/classify` real y el zero-shot (M06) siguen pendientes.
 - **M06 (`llm_zero_shot.py`):** `python -m eval.llm_zero_shot` (requiere `pip install anthropic` y `ANTHROPIC_API_KEY`;
   modelo `claude-haiku-4-5-20251001`). **Pendiente: correrlo.**
 - `por_idioma.py` y el dataset `tests/fixtures/textos_etiquetados.jsonl` (32 textos sintéticos): sirven para el flujo,
