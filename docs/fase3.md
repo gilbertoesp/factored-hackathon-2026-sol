@@ -10,12 +10,25 @@ Lo que sí aporta este lado, para alimentar los `Facts` del motor:
 - `motor/txn_buscar.py`: búsqueda acotada al cliente. Existe otra versión en la rama de Manuel (D10): hay que elegir una.
 - `motor/subtipo_cobro.py`: `kind` (comisión/compra) y duplicado en <= 10 min (`duplicateGapMinutes`, R23).
 
-## Evaluación (`eval/`)
-- `baseline_d07.py` (D07): referencia del negocio (FCR 43,6 %, seguimiento 63 %, 7,2 min; no medidos aquí). `medir`
-  recibe resultados ya mapeados desde el motor. **Pendiente:** conectarlo al motor TS con los casos D08 de Manuel
-  (`data_pipeline/casos_prueba/casos_r09_r20.json`). Sin tráfico real no hay tiempo medio.
-- `llm_zero_shot.py` (M06): `python -m eval.llm_zero_shot` (requiere `pip install anthropic` y `ANTHROPIC_API_KEY`;
-  modelo `claude-haiku-4-5-20251001`, `ZERO_SHOT_MODEL` lo cambia). **Pendiente: correrlo.**
-- `por_idioma.py` (M09): acepta cualquier clasificador. Dataset provisional `tests/fixtures/textos_etiquetados.jsonl`
-  (32 textos sintéticos, 8 por idioma): sirve para el flujo, no para conclusiones.
+## Evaluación contra el motor real (`eval/`)
+Montaje: `bash eval/preparar_motor.sh` deja en `.motor/` (ignorado por git) el motor de `origin/feat/rules-engine` y los
+casos D08 de `origin/feat/hackathon-data-pipeline_v1`, sin mezclar historias. Necesita Node y red para `npm i zod tsx`.
+Ejecución: `python -m eval.contra_motor`. `eval/engine_runner.mts` es el puente: lee `Facts` y devuelve las
+decisiones de `decide` del motor TS. Las pruebas (`tests/test_contra_motor.py`) se omiten si el motor no está montado.
+
+- **D08 (rama de Manuel):** 265 casos con `hechos`, R09-R20, todos `cargo_no_reconocido`. El motor coincide en
+  265/265 en regla, derivación, cola y prioridad (motor `6a89c5d`, casos `67b020f`). Los casos salieron de la misma
+  matriz, así que esto confirma la integración y la paridad con lo que Manuel esperaba, no la calidad del negocio.
+  Los 60 casos de `busqueda` son el recall de `txn.buscar` y necesitan la base de datos: no se evaluaron aquí.
+- **D07:** `baseline_d07.py` (referencia FCR 43,6 %, seguimiento 63 %, 7,2 min; no medidos aquí). Con D08 sale
+  FCR proxy 50,9 %, pero **no es comparable**: los casos están balanceados por regla (~20 por regla) y solo cubren
+  cargos no reconocidos, no la mezcla real de reclamos. La comparación válida necesita la distribución real de
+  intenciones y el tiempo medio solo existe con tráfico real.
+- **M09:** `eval/contra_motor.py` pasa la salida del clasificador al primer paso del motor (R05/R07/R08 o pedir
+  búsqueda) y mide por idioma. Hoy corre con un clasificador oráculo (verifica el flujo); falta enchufar `/classify`
+  o el zero-shot. Con confianza < 0,7 el motor responde R05 aunque el clasificador diga otra cosa (probado).
+- **M06 (`llm_zero_shot.py`):** `python -m eval.llm_zero_shot` (requiere `pip install anthropic` y `ANTHROPIC_API_KEY`;
+  modelo `claude-haiku-4-5-20251001`). **Pendiente: correrlo.**
+- `por_idioma.py` y el dataset `tests/fixtures/textos_etiquetados.jsonl` (32 textos sintéticos): sirven para el flujo,
+  no para conclusiones.
 - B08: ver `docs/adversarial_b08.md`.

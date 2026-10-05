@@ -11,3 +11,6 @@ data/
 *.parquet
 *.csv
 .ipynb_checkpoints/
+
+# motor de reglas y casos D08 descargados por eval/preparar_motor.sh
+.motor/
