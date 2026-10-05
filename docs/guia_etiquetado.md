@@ -28,7 +28,7 @@ Subtipos de `cobro_indebido` (los usan las reglas de cobro indebido, ver tabla d
 - `compra`: cobro de una compra concreta que el cliente discute (monto incorrecto, no entregada).
 
 Los subtipos del clasificador son lo que dice el cliente; `motor/subtipo_cobro.py` los verifica contra los
-datos de la transacción (ajuste sin comercio → comisión; mismo monto/comercio en 24 h → duplicado).
+datos de la transacción (ajuste sin comercio → comisión; mismo monto/comercio en ≤ 10 min → duplicado).
 
 ## Reglas de decisión al etiquetar
 
@@ -51,10 +51,18 @@ Ejemplos:
 | "Perdí mi tarjeta, bloqueénla" (es-CO) | `fuera_de_alcance` / `bloqueo_tarjeta` |
 | "Hola, necesito ayuda con mi cuenta" (es-AR) | `ambigua` |
 
-## Tabla de reglas (pendiente de confirmar con el equipo del motor)
+## Tabla de reglas
 
-Se asume R21 = comisión, R22 = duplicado, R23 = compra. **R29 no está definida en este repositorio**: se
-necesita su descripción para saber qué subtipo/hechos requiere.
+Fuente: matriz de decisión del motor (`rules.json` en `feat/rules-engine`). Las de cobro indebido:
+
+| Regla | Condición | Acción |
+|---|---|---|
+| R21 | comisión ≤ 25 USD y primera en 12 meses | reversión automática |
+| R22 | comisión sobre el límite o no es la primera | reclamo y asesor |
+| R23 | duplicado: mismo comercio y monto en ≤ 10 min | revertir el segundo (≤ límite) o reclamo y asesor |
+| R29 | compra reconocida con monto o cobro incorrecto | reclamo a back office de disputas |
+
+Por tanto el subtipo `comision` alimenta R21/R22, `duplicado` R23 y `compra` R29.
 
 ## Dataset de entrenamiento (M02): especificación para la revisión con Manuel
 

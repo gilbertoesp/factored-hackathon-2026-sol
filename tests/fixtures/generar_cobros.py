@@ -28,10 +28,14 @@ for k in range(10):  # comisión: ajuste sin comercio
 for k in range(5):  # comisión: comercio con palabra de comisión
     n += 1; sel = txn(n, f"CLI-F{k}", merchant_name=rnd.choice(["Comisión por mantenimiento", "Fee mensual", "Cargo por membresía"]))
     cases.append(dict(name=f"comision_comercio_{k}", expected="comision", selected=sel, others=[txn(n * 10 + 1, f"CLI-F{k}")]))
-for k in range(10):  # duplicado: mismo monto/comercio en < 24 h
+for k in range(10):  # duplicado: mismo monto/comercio en <= 10 min (R23)
     n += 1; sel = txn(n, f"CLI-D{k}")
-    dup = dict(sel, transaction_id=f"TXN-D{k:04d}", transaction_date=sel["transaction_date"] + timedelta(minutes=rnd.randint(1, 600)))
+    dup = dict(sel, transaction_id=f"TXN-D{k:04d}", transaction_date=sel["transaction_date"] + timedelta(minutes=rnd.randint(1, 10)))
     cases.append(dict(name=f"duplicado_{k}", expected="duplicado", selected=sel, others=[dup, txn(n * 10 + 1, f"CLI-D{k}")]))
+for k, (mins, exp) in enumerate([(10, "duplicado"), (11, "compra"), (600, "compra")]):  # borde de la ventana
+    n += 1; sel = txn(n, f"CLI-B{k}")
+    dup = dict(sel, transaction_id=f"TXN-B{k:04d}", transaction_date=sel["transaction_date"] + timedelta(minutes=mins))
+    cases.append(dict(name=f"borde_{mins}min", expected=exp, selected=sel, others=[dup]))
 for k in range(5):  # NO duplicado: igual monto pero 3 días después, o la copia fue revertida
     n += 1; sel = txn(n, f"CLI-N{k}")
     other = dict(sel, transaction_id=f"TXN-N{k:04d}",
